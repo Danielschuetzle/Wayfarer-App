@@ -1,11 +1,24 @@
-import Heading from "../components/Heading";
-import SubHeading from "../components/SubHeading";
+import axios from 'axios';
+import PlanList from '../components/PlanList';
 
-export default function Home() {
-  return (
-    <main>
-      <Heading>🐬 Capstone Template 🐬</Heading>
-      <SubHeading>We dolphinitely love coding!</SubHeading>
-    </main>
-  );
+const HomePage = ({ plans }) => {
+    return (
+        <div>
+            <h1>Travel Plans</h1>
+            <PlanList plans={plans} />
+        </div>
+    );
 }
+
+export const getServerSideProps = async () => {
+    const res = await axios.get('http://localhost:3000/api/getAllPlans');
+    const plans = res.data;
+
+    return {
+        props: {
+            plans
+        },
+    }
+}
+
+export default HomePage;
