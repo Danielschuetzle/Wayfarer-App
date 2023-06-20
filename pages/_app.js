@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import GlobalStyle from '../styles';
 import Head from 'next/head';
-import TravelPlanForm from '../components/TravelPlanForm';
-import TravelPlan from '../components/TravelPlan';
+import TravelPlanForm from '../components/TravelPlanForm/index.js';
+import TravelPlan from '../components/TravelPlan/index.js';
 
 export default function App({ Component, pageProps }) {
   const [travelPlans, setTravelPlans] = useState([]);
