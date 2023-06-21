@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import GlobalStyle from '../styles';
 import Head from 'next/head';
-import TravelPlanForm from '../components/TravelPlanForm/index.js';
-import TravelPlan from '../components/TravelPlan/index.js';
 
 export default function App({ Component, pageProps }) {
   const [travelPlans, setTravelPlans] = useState([]);
@@ -15,13 +13,9 @@ export default function App({ Component, pageProps }) {
     <>
       <GlobalStyle />
       <Head>
-        <title>Wayfarer App</title>
+        <title>Capstone Project</title>
       </Head>
-      <TravelPlanForm addTravelPlan={addTravelPlan} />
-      {travelPlans.map((plan, index) => (
-        <TravelPlan key={index} plan={plan} />
-      ))}
-      <Component {...pageProps} />
+      <Component {...pageProps} onAddTravelPlan={addTravelPlan} travelPlans={travelPlans} />
     </>
   );
 }
