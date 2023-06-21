@@ -13,7 +13,7 @@ export default function App({ Component, pageProps }) {
     <>
       <GlobalStyle />
       <Head>
-        <title>Capstone Project</title>
+        <title>Wayfarere App</title>
       </Head>
       <Component {...pageProps} onAddTravelPlan={addTravelPlan} travelPlans={travelPlans} />
     </>
