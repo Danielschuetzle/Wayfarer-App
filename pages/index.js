@@ -1,11 +1,18 @@
-import Heading from "../components/Heading";
-import SubHeading from "../components/SubHeading";
+import React from "react";
+import TravelPlanForm from "../components/TravelPlanForm";
+import TravelPlan from "../components/TravelPlan"; 
 
-export default function Home() {
-  return (
-    <main>
-      <Heading>🐬 Capstone Template 🐬</Heading>
-      <SubHeading>We dolphinitely love coding!</SubHeading>
-    </main>
-  );
+const HomePage = ({travelPlans, onAddTravelPlan}) => {
+    const travelPlanItems = travelPlans.map((plan, index) => 
+        <TravelPlan key={index} plan={plan} />
+    );
+
+    return (
+        <>
+            <TravelPlanForm addTravelPlan={onAddTravelPlan} />
+            {travelPlanItems}
+        </>
+    )
 }
+
+export default HomePage;
