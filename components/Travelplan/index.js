@@ -1,15 +1,17 @@
-import TravelPlanForm from '../components/TravelPlanForm';
-import TravelPlan from '../components/TravelPlan';
+import React from 'react';
+import Link from 'next/link';
 
-const HomePage = ({travelPlans, onAddTravelPlan}) => {
-    return (
-    <>
-        <TravelPlanForm addTravelPlan={onAddTravelPlan} />
-        {travelPlans.map((plan, index) => (
-            <TravelPlan key={index} plan={plan} />
-        ))}
-    </>
-    )
+const TravelPlan = ({ plan, index }) => {
+  return (
+    <div>
+      <h2>
+        <Link href={`/plan/${index}`}>
+          {plan.name}
+        </Link>
+      </h2>
+      <p>{plan.startDate} - {plan.endDate}</p>
+    </div>
+  );
 }
 
-export default HomePage;
+export default TravelPlan;

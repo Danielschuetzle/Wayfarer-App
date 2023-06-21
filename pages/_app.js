@@ -1,12 +1,18 @@
-import { useState } from 'react';
-import GlobalStyle from '../styles';
-import Head from 'next/head';
+import React, { useState } from 'react';
+import GlobalStyle from "../styles";
+import Head from "next/head";
 
 export default function App({ Component, pageProps }) {
   const [travelPlans, setTravelPlans] = useState([]);
 
   const addTravelPlan = (plan) => {
-    setTravelPlans([...travelPlans, plan]);
+    setTravelPlans([ ...travelPlans, plan ]);
+  };
+
+  const updatedPageProps = {
+    ...pageProps,
+    travelPlans,
+    addTravelPlan,
   };
 
   return (
@@ -15,7 +21,7 @@ export default function App({ Component, pageProps }) {
       <Head>
         <title>Capstone Project</title>
       </Head>
-      <Component {...pageProps} onAddTravelPlan={addTravelPlan} travelPlans={travelPlans} />
+      <Component {...updatedPageProps} />
     </>
   );
 }
