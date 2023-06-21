@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import GlobalStyle from '../styles';
-import Head from 'next/head';
+import { useState } from "react";
+import GlobalStyle from "../styles";
+import Head from "next/head";
 
 export default function App({ Component, pageProps }) {
   const [travelPlans, setTravelPlans] = useState([]);
@@ -13,7 +13,7 @@ export default function App({ Component, pageProps }) {
     <>
       <GlobalStyle />
       <Head>
-        <title>Wayfarere App</title>
+        <title>Capstone Project</title>
       </Head>
       <Component {...pageProps} onAddTravelPlan={addTravelPlan} travelPlans={travelPlans} />
     </>

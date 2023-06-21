@@ -1,40 +1,51 @@
-import React, { useState } from 'react';
+import { useState } from "react";
 
-const TravelPlanForm = ({addTravelPlan}) => {
-    const [plan, setPlan] = useState({
-        name: '',
-        startDate: '',
-        endDate: '',
-        activity: ''
-    });
+const TravelPlanForm = ({ addTravelPlan }) => {
+  const [name, setName] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [activity, setActivity] = useState("");
 
-    const handleChange = (event) => {
-        setPlan({
-            ...plan,
-            [event.target.name]: event.target.value
-        });
-    };
+  const onSubmit = (e) => {
+    e.preventDefault();
+    addTravelPlan({ name, startDate, endDate, activity });
+    setName("");
+    setStartDate("");
+    setEndDate("");
+    setActivity("");
+  };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        addTravelPlan(plan);
-        setPlan({
-            name: '',
-            startDate: '',
-            endDate: '',
-            activity: ''
-        });
-    };
-
-    return (
-        <form onSubmit={handleSubmit}>
-            <input type="text" name="name" value={plan.name} onChange={handleChange} placeholder="Plan Name" required />
-            <input type="date" name="startDate" value={plan.startDate} onChange={handleChange} required />
-            <input type="date" name="endDate" value={plan.endDate} onChange={handleChange} required />
-            <input type="text" name="activity" value={plan.activity} onChange={handleChange} placeholder="Activity" required />
-            <button type="submit">Save Travel Plan</button>
-        </form>
-    );
+  return (
+    <form onSubmit={onSubmit}>
+      <input
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="Name"
+        required
+      />
+      <input
+        type="date"
+        value={startDate}
+        onChange={(e) => setStartDate(e.target.value)}
+        required
+      />
+      <input
+        type="date"
+        value={endDate}
+        onChange={(e) => setEndDate(e.target.value)}
+        required
+      />
+      <input
+        type="text"
+        value={activity}
+        onChange={(e) => setActivity(e.target.value)}
+        placeholder="Activity"
+        required
+      />
+      <button type="submit">Save Travel Plan</button>
+    </form>
+  );
 };
 
 export default TravelPlanForm;

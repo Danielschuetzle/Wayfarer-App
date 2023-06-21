@@ -1,4 +1,4 @@
-import TravelPlanForm from '../components/TravelPlanForm/index.js';
+import TravelPlanForm from '../components/TravelPlanForm';
 import TravelPlan from '../components/TravelPlan/index.js';
 
 const HomePage = ({travelPlans, onAddTravelPlan}) => {
