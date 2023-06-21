@@ -1,5 +1,5 @@
-import TravelPlanForm from '../components/TravelPlanForm/index.js';
-import TravelPlan from '../components/TravelPlan/index.js';
+import TravelPlanForm from "../components/TravelPlanForm";
+import TravelPlan from "../components/TravelPlan"; 
 
 
 const HomePage = ({travelPlans, onAddTravelPlan}) => {
