@@ -1,14 +1,12 @@
 import React from 'react';
 import TravelPlanForm from '../components/TravelPlanForm';
-import TravelPlan from '../components/TravelPlan';
+import TravelPlansList from '../components/TravelPlansList';
 
-const HomePage = ({ travelPlans, addTravelPlan }) => {
+const HomePage = () => {
   return (
     <>
-      <TravelPlanForm addTravelPlan={addTravelPlan} />
-      {travelPlans.map((plan, index) => (
-        <TravelPlan key={index} plan={plan} index={index} />
-      ))}
+      <TravelPlanForm />
+      <TravelPlansList />
     </>
   );
 }
