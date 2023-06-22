@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import getTravelPlan from '../lib/travelPlanDb'; 
+import { getTravelPlan } from '../../lib/travelPlanDb';
 
 // This component receives a travel plan id as a prop and displays its details
 const TravelPlanDetail = ({ id }) => {
