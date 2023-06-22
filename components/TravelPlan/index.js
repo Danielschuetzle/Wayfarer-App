@@ -1,12 +1,17 @@
-import React from "react";
+import React from 'react';
+import Link from 'next/link';
 
-const TravelPlan = ({ plan: { name, startDate, endDate, activity } }) => (
+const TravelPlan = ({ plan, index }) => {
+  return (
     <div>
-        <h2>{name}</h2>
-        <p>Start Date: {startDate}</p>
-        <p>End Date: {endDate}</p>
-        <p>Activity: {activity}</p>
+      <h2>
+        <Link href={`/plan/${index}`}>
+          {plan.name}
+        </Link>
+      </h2>
+      <p>{plan.startDate} - {plan.endDate}</p>
     </div>
-);
+  );
+}
 
 export default TravelPlan;
