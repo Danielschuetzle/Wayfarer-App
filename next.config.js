@@ -9,7 +9,7 @@ const nextConfig = {
   },
   webpack: (config) => {
     config.resolve.fallback = {
-      buffer: require.resolve('buffer/'),
+      buffer: require.resolve('buffer'),
       fs: false,
       https: false,
       http: false,
