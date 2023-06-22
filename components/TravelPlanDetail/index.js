@@ -1,26 +1,21 @@
 import { useEffect, useState } from 'react';
-import { getTravelPlan } from '../../lib/travelPlanDb';
+import fetch from 'node-fetch';
 
-// This component receives a travel plan id as a prop and displays its details
 const TravelPlanDetail = ({ id }) => {
-  // Create a state variable to store the fetched travel plan
   const [plan, setPlan] = useState(null);
 
-  // Use useEffect to fetch the travel plan when the component mounts and every time the 'id' prop changes
   useEffect(() => {
-    // Define an async function to fetch the travel plan
+    // Fetch the travel plan when the component mounts and every time the 'id' prop changes
     const fetchPlan = async () => {
-      // Fetch the travel plan from the database
-      const fetchedPlan = await getTravelPlan(id);
-      // Update the state with the fetched travel plan
-      setPlan(fetchedPlan);
+      // Make a request to the API endpoint to fetch the travel plan by its ID
+      const res = await fetch(`/api/plans/${id}`);
+      const data = await res.json();
+      setPlan(data);
     };
 
-    // Call the fetchPlan function
     fetchPlan();
-  }, [id]); // The effect depends on the 'id' prop
+  }, [id]);
 
-  // If the travel plan hasn't been fetched yet, render a loading message
   if (!plan) {
     return <div>Loading...</div>;
   }
@@ -28,7 +23,6 @@ const TravelPlanDetail = ({ id }) => {
   // Sort the activities by their start dates
   const sortedActivities = plan.activities.sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
 
-  // Once the travel plan has been fetched, render its details
   return (
     <div>
       <h2>{plan.name}</h2>

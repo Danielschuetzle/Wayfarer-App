@@ -1,11 +1,11 @@
 import React from 'react';
 import Link from 'next/link';
 
-const TravelPlan = ({ plan, index }) => {
+const TravelPlan = ({ plan }) => {
   return (
     <div>
       <h2>
-        <Link href={`/plan/${index}`}>
+        <Link href={`/plan/${plan._id}`}>
           {plan.name}
         </Link>
       </h2>
