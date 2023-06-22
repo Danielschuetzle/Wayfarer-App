@@ -1,4 +1,3 @@
-/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
@@ -6,12 +5,17 @@ const nextConfig = {
     styledComponents: true,
   },
   images: {
-    remotePatterns: [
-      // {
-      //   protocol: 'https',
-      //   hostname: 'images.unsplash.com'
-      // },
-    ],
+    remotePatterns: [],
+  },
+  webpack: (config) => {
+    config.resolve.fallback = {
+      buffer: require.resolve('buffer/'),
+      fs: false,
+      https: false,
+      http: false,
+      net: false,
+    };
+    return config;
   },
 };
 
