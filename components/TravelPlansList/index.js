@@ -1,19 +1,17 @@
-import { useEffect, useState } from 'react';
+import useSWR from 'swr';
 
-// Component for displaying a list of travel plans
+const fetchData = (url) => fetch(url).then(response => response.json());
+
 const TravelPlansList = () => {
-  const [plans, setPlans] = useState([]); // State variable to store the travel plans
+  const { data: plans, error } = useSWR('/api/plans', fetchData);
 
-  useEffect(() => {
-    // Fetch travel plans from the API
-    const fetchPlans = async () => {
-      const response = await fetch('/api/plans');
-      const data = await response.json();
-      setPlans(data); // Update the state with the fetched travel plans
-    };
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
-    fetchPlans(); // Fetch travel plans when the component mounts
-  }, []);
+  if (!plans) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
@@ -28,6 +26,6 @@ const TravelPlansList = () => {
       ))}
     </div>
   );
-};
+}
 
 export default TravelPlansList;
