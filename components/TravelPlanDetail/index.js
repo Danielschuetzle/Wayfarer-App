@@ -21,12 +21,17 @@ const TravelPlanDetail = ({ id }) => {
     return <div>Loading...</div>;
   }
 
+  // Ensure that the plan object contains the necessary properties
+  if (!plan.name || !plan.activities) {
+    return <div>Invalid travel plan data</div>;
+  }
+
   // Sort the activities by their start dates
-  const sortedActivities = plan.activities.sort(
+  const sortedActivities = [...plan.activities].sort(
     (a, b) => new Date(a.startDate) - new Date(b.startDate)
   );
 
-  // Once the travel plan has been fetched, render its details
+  // Once the travel plan has been fetched and validated, render its details
   return (
     <div>
       <h2>{plan.name}</h2>

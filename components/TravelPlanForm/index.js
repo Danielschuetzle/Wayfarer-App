@@ -5,12 +5,14 @@ const TravelPlanForm = ({ addTravelPlan }) => {
   const router = useRouter();
 
   // Initialize the state of the form fields
-  const [plan, setPlan] = useState({
+  const initialPlanState = {
     name: '',
     startDate: '',
     endDate: '',
     activity: '',
-  });
+  };
+
+  const [plan, setPlan] = useState(initialPlanState);
 
   // Handler function to update state when input fields change
   const handleChange = (event) => {
@@ -24,7 +26,13 @@ const TravelPlanForm = ({ addTravelPlan }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Make a request to our API route with the plan data to save it in the database
+    // Validate form inputs
+    if (!plan.name || !plan.startDate || !plan.endDate || !plan.activity) {
+      alert('Please fill in all fields');
+      return;
+    }
+
+    // Make a request to the API route with the plan data to save it in the database
     const res = await fetch('/api/plans', {
       method: 'POST',
       headers: {
@@ -32,6 +40,11 @@ const TravelPlanForm = ({ addTravelPlan }) => {
       },
       body: JSON.stringify(plan),
     });
+
+    if (!res.ok) {
+      alert('Failed to save travel plan');
+      return;
+    }
 
     const result = await res.json();
 
@@ -42,12 +55,7 @@ const TravelPlanForm = ({ addTravelPlan }) => {
     router.push(`/plan/${result._id}`);
 
     // Clear the form fields
-    setPlan({
-      name: '',
-      startDate: '',
-      endDate: '',
-      activity: '',
-    });
+    setPlan(initialPlanState);
   };
 
   // Render the form

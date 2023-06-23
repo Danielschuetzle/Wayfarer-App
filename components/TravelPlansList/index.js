@@ -6,14 +6,12 @@ const fetcher = async (url) => {
   return data;
 };
 
-const TravelPlansList = ({ travelPlans }) => {
-  const { data: fetchedPlans, error } = useSWR('/api/plans', fetcher);
-
+const TravelPlansList = () => {
+  const { data: plans, error } = useSWR('/api/plans', fetcher);
+  console.log(plans);
   if (error) {
     return <div>Error: {error.message}</div>;
   }
-
-  const plans = fetchedPlans || travelPlans;
 
   if (!plans) {
     return <div>Loading...</div>;
@@ -25,9 +23,9 @@ const TravelPlansList = ({ travelPlans }) => {
       {plans.map((plan) => (
         <div key={plan._id}>
           <h2>{plan.name}</h2>
-          <p>Start Date: {new Date(plan.startDate).toLocaleDateString()}</p>
-          <p>End Date: {new Date(plan.endDate).toLocaleDateString()}</p>
-          <p>Activities: {plan.activities.join(", ")}</p>
+          <p>Start Date: {plan.startDate}</p>
+          <p>End Date: {plan.endDate}</p>
+          <p>Activities: {plan.activities.join(', ')}</p>
         </div>
       ))}
     </div>
