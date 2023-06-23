@@ -3,8 +3,7 @@ import { getPlans, createPlan } from '../../lib/travelPlanDb';
 export default async function handler(req, res) {
   try {
     if (req.method === 'GET') {
-      const { id } = req.query;
-      const plans = await getPlans(id);
+      const plans = await getPlans();
       return res.json(plans);
     } else if (req.method === 'POST') {
       const plan = req.body;
