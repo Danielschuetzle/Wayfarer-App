@@ -25,7 +25,7 @@ const TravelPlanForm = ({ addTravelPlan }) => {
     event.preventDefault();
 
     // Make a request to our API route with the plan data to save it in the database
-    const res = await fetch('/api/travelPlan', {
+    const res = await fetch('/api/plans', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

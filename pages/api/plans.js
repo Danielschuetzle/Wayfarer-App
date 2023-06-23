@@ -10,7 +10,7 @@ export default async function handler(req, res) {
     await client.connect();
 
     const db = client.db(process.env.MONGODB_DB);
-    
+
     if (req.method === 'GET') {
       const { id } = req.query;
 
@@ -22,6 +22,14 @@ export default async function handler(req, res) {
         const plans = await db.collection("plans").find({}).toArray();
         return res.json(plans);
       }
+    } else if (req.method === 'POST') {
+      const plan = req.body;
+
+      // Insert the plan into the 'plans' collection
+      const result = await db.collection("plans").insertOne(plan);
+      const savedPlan = result.ops[0];
+
+      return res.status(201).json(savedPlan);
     }
   } finally {
     // Ensuring that the client will close when you finish/error
