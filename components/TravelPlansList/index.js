@@ -6,12 +6,14 @@ const fetcher = async (url) => {
   return data;
 };
 
-const TravelPlansList = () => {
-  const { data: plans, error } = useSWR('/api/plans', fetcher);
+const TravelPlansList = ({ travelPlans }) => {
+  const { data: fetchedPlans, error } = useSWR('/api/plans', fetcher);
 
   if (error) {
     return <div>Error: {error.message}</div>;
   }
+
+  const plans = fetchedPlans || travelPlans;
 
   if (!plans) {
     return <div>Loading...</div>;

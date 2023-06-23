@@ -3,10 +3,10 @@ import GlobalStyle from "../styles";
 import Head from "next/head";
 
 export default function App({ Component, pageProps }) {
-  const [travelPlans, setTravelPlans] = useState([]);
+  const [travelPlans, setTravelPlans] = useState(pageProps.travelPlans || []);
 
   const addTravelPlan = (plan) => {
-    setTravelPlans([...travelPlans, plan]); // Save the plan to the local state
+    setTravelPlans([...travelPlans, plan]);
   };
 
   const updatedPageProps = {

@@ -2,11 +2,11 @@ import React from 'react';
 import TravelPlanForm from '../components/TravelPlanForm';
 import TravelPlansList from '../components/TravelPlansList';
 
-const HomePage = () => {
+const HomePage = ({ travelPlans }) => {
   return (
     <>
       <TravelPlanForm />
-      <TravelPlansList />
+      <TravelPlansList travelPlans={travelPlans} />
     </>
   );
 }
