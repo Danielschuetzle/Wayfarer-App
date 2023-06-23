@@ -1,9 +1,13 @@
 import useSWR from 'swr';
 
-const fetchData = (url) => fetch(url).then(response => response.json());
+const fetcher = async (url) => {
+  const res = await fetch(url);
+  const data = await res.json();
+  return data;
+};
 
 const TravelPlansList = () => {
-  const { data: plans, error } = useSWR('/api/plans', fetchData);
+  const { data: plans, error } = useSWR('/api/plans', fetcher);
 
   if (error) {
     return <div>Error: {error.message}</div>;
@@ -26,6 +30,6 @@ const TravelPlansList = () => {
       ))}
     </div>
   );
-}
+};
 
 export default TravelPlansList;

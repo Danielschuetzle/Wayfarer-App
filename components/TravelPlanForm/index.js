@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 
-const TravelPlanForm = () => {
+const TravelPlanForm = ({ addTravelPlan }) => {
   const router = useRouter();
 
   // Initialize the state of the form fields
@@ -9,7 +9,7 @@ const TravelPlanForm = () => {
     name: '',
     startDate: '',
     endDate: '',
-    activity: '', // Added activity field
+    activity: '',
   });
 
   // Handler function to update state when input fields change
@@ -35,6 +35,9 @@ const TravelPlanForm = () => {
 
     const result = await res.json();
 
+    // Add the plan to the local display
+    addTravelPlan(result);
+
     // Redirect the user to the detail page of the newly created plan
     router.push(`/plan/${result._id}`);
 
@@ -43,7 +46,7 @@ const TravelPlanForm = () => {
       name: '',
       startDate: '',
       endDate: '',
-      activity: '', // Clear activity field
+      activity: '',
     });
   };
 
@@ -53,7 +56,7 @@ const TravelPlanForm = () => {
       <input type="text" name="name" value={plan.name} onChange={handleChange} placeholder="Plan Name" required />
       <input type="date" name="startDate" value={plan.startDate} onChange={handleChange} required />
       <input type="date" name="endDate" value={plan.endDate} onChange={handleChange} required />
-      <input type="text" name="activity" value={plan.activity} onChange={handleChange} placeholder="Activity" required /> {/* Added activity field */}
+      <input type="text" name="activity" value={plan.activity} onChange={handleChange} placeholder="Activity" required />
       <button type="submit">Save Travel Plan</button>
     </form>
   );

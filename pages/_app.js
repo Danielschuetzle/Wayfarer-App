@@ -6,7 +6,7 @@ export default function App({ Component, pageProps }) {
   const [travelPlans, setTravelPlans] = useState([]);
 
   const addTravelPlan = (plan) => {
-    setTravelPlans([ ...travelPlans, plan ]);
+    setTravelPlans([...travelPlans, plan]); // Save the plan to the local state
   };
 
   const updatedPageProps = {
