@@ -25,7 +25,7 @@ const TravelPlansList = () => {
           <h2>{plan.name}</h2>
           <p>Start Date: {plan.startDate}</p>
           <p>End Date: {plan.endDate}</p>
-          <p>Activities: {plan.activities.join(', ')}</p>
+          <p>Activities: {plan.activities ? plan.activities.join(', ') : ''}</p>
         </div>
       ))}
     </div>
