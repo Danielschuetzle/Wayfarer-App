@@ -1,72 +1,76 @@
-import React, { useState } from 'react';
-import { useRouter } from 'next/router';
+import React from 'react';
+import styled from 'styled-components';
 
-const TravelPlanForm = ({ addTravelPlan }) => {
-  const router = useRouter();
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
 
-  // Initialize the state of the form fields
-  const initialPlanState = {
-    name: '',
-    startDate: '',
-    endDate: '',
-    activity: '',
-  };
+  @media (max-width: 600px) {
+    margin-bottom: 10px;
+  }
+`;
 
-  const [plan, setPlan] = useState(initialPlanState);
+const Label = styled.label`
+  color: #3f72af;
+  margin-bottom: 5px;
+`;
 
-  // Handler function to update state when input fields change
-  const handleChange = (event) => {
-    setPlan({
-      ...plan,
-      [event.target.name]: event.target.value,
-    });
-  };
+const Input = styled.input`
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+`;
 
-  // Handler function for form submission
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+const Button = styled.button`
+  padding: 10px 20px;
+  background-color: #3f72af;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+`;
 
-    // Validate form inputs
-    if (!plan.name || !plan.startDate || !plan.endDate || !plan.activity) {
-      alert('Please fill in all fields');
-      return;
-    }
-
-    // Make a request to the API route with the plan data to save it in the database
-    const res = await fetch('/api/plans', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(plan),
-    });
-
-    if (!res.ok) {
-      alert('Failed to save travel plan');
-      return;
-    }
-
-    const result = await res.json();
-
-    // Add the plan to the local display
-    addTravelPlan(result);
-
-    // Redirect the user to the detail page of the newly created plan
-    router.push(`/plan/${result._id}`);
-
-    // Clear the form fields
-    setPlan(initialPlanState);
-  };
-
-  // Render the form
+const TravelPlanForm = ({
+  handleSubmit,
+  planName,
+  setPlanName,
+  startDate,
+  setStartDate,
+  endDate,
+  setEndDate,
+  activity,
+  setActivity,
+}) => {
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="text" name="name" value={plan.name} onChange={handleChange} placeholder="Plan Name" required />
-      <input type="date" name="startDate" value={plan.startDate} onChange={handleChange} required />
-      <input type="date" name="endDate" value={plan.endDate} onChange={handleChange} required />
-      <input type="text" name="activity" value={plan.activity} onChange={handleChange} placeholder="Activity" required />
-      <button type="submit">Save Travel Plan</button>
-    </form>
+    <Form onSubmit={handleSubmit}>
+      <Label>Plan Name:</Label>
+      <Input
+        type="text"
+        value={planName}
+        onChange={(e) => setPlanName(e.target.value)}
+      />
+      <Label>Start Date:</Label>
+      <Input
+        type="date"
+        value={startDate}
+        onChange={(e) => setStartDate(e.target.value)}
+      />
+      <Label>End Date:</Label>
+      <Input
+        type="date"
+        value={endDate}
+        onChange={(e) => setEndDate(e.target.value)}
+      />
+      <Label>Activity:</Label>
+      <Input
+        type="text"
+        value={activity}
+        onChange={(e) => setActivity(e.target.value)}
+      />
+      <Button type="submit">Add Travel Plan</Button>
+    </Form>
   );
 };
 

@@ -1,49 +1,121 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { useRouter } from 'next/router';
 
-const TravelPlanDetail = ({ id }) => {
-  // Create a state variable to store the fetched travel plan
-  const [plan, setPlan] = useState(null);
+const Container = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f5f8fb;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+`;
+
+const Title = styled.h1`
+  color: #3f72af;
+  font-size: 24px;
+  margin-bottom: 20px;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+`;
+
+const ReturnButton = styled.button`
+  background-color: #888;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+`;
+
+const EditButton = styled.button`
+  background-color: #3f72af;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+`;
+
+const DeleteButton = styled.button`
+  background-color: #ff6347;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+`;
+const TravelPlanDetail = () => {
+  const router = useRouter();
+  const { id } = router.query;
+
+  const [travelPlan, setTravelPlan] = useState(null);
 
   useEffect(() => {
-    // Define an effect to fetch the travel plan when the component mounts and every time the 'id' prop changes
-    const fetchPlan = async () => {
-      // Make a fetch request to the API endpoint that retrieves the travel plan based on the provided 'id'
-      const res = await fetch(`/api/plans/${id}`);
-      const data = await res.json();
-      setPlan(data); // Update the state with the fetched travel plan
+    const fetchTravelPlan = async () => {
+      try {
+        const response = await fetch(`/api/travelplans/${id}`);
+        const data = await response.json();
+        setTravelPlan(data);
+      } catch (error) {
+        console.error('Error fetching travel plan details:', error);
+      }
     };
 
-    fetchPlan(); // Call the fetchPlan function
-  }, [id]); // The effect depends on the 'id' prop
+    if (id !== undefined) {
+      fetchTravelPlan();
+    }
+  }, [id]);
 
-  // If the travel plan hasn't been fetched yet, render a loading message
-  if (!plan) {
-    return <div>Loading...</div>;
+  const handleReturn = () => {
+    router.push('/');
+  };
+
+  const handleEdit = () => {
+    router.push(`/travelplans/${id}/edit`);
+  };
+
+  const handleDelete = async () => {
+    const confirmed = window.confirm('Are you sure you want to delete this travel plan?');
+    if (confirmed) {
+      try {
+        const response = await fetch(`/api/travelplans/${id}`, {
+          method: 'DELETE',
+        });
+        if (response.ok) {
+          console.log('Travel plan deleted successfully');
+          router.push('/');
+        } else {
+          console.error('Error deleting travel plan');
+        }
+      } catch (error) {
+        console.error('Error deleting travel plan:', error);
+      }
+    }
+  };
+
+  if (!travelPlan) {
+    return <p>Loading...</p>;
   }
 
-  // Ensure that the plan object contains the necessary properties
-  if (!plan.name || !plan.activities) {
-    return <div>Invalid travel plan data</div>;
-  }
-
-  // Sort the activities by their start dates
-  const sortedActivities = [...plan.activities].sort(
-    (a, b) => new Date(a.startDate) - new Date(b.startDate)
-  );
-
-  // Once the travel plan has been fetched and validated, render its details
   return (
-    <div>
-      <h2>{plan.name}</h2>
-      {sortedActivities.map((activity, index) => (
-        <div key={index}>
-          <h3>{activity.name}</h3>
-          <p>{activity.startDate} - {activity.endDate}</p>
-          <p>{activity.details}</p>
-        </div>
-      ))}
-      <button onClick={() => window.history.back()}>Go Back</button>
-    </div>
+    <Container>
+      <Title>Travel Plan Detail Page</Title>
+      <p>ID: {travelPlan._id}</p>
+      <p>Plan Name: {travelPlan.name}</p>
+      <p>Start Date: {travelPlan.startDate}</p>
+      <p>End Date: {travelPlan.endDate}</p>
+      <p>Activities: {travelPlan.activities.join(', ')}</p>
+      <ButtonContainer>
+        <ReturnButton onClick={handleReturn}>Return</ReturnButton>
+        <EditButton onClick={handleEdit}>Edit</EditButton>
+        <DeleteButton onClick={handleDelete}>Delete</DeleteButton>
+      </ButtonContainer>
+    </Container>
   );
 };
 
