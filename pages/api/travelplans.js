@@ -1,4 +1,4 @@
-import TravelPlan from '../models/Travelplan';
+import TravelPlan from '../schemas/Travelplan';
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {
