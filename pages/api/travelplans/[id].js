@@ -1,4 +1,4 @@
-import TravelPlan from '../../models/TravelPlan';
+import {TravelPlan} from '../../models/TravelPlan';
 
 export default async function handler(req, res) {
   const { id } = req.query;

@@ -19,4 +19,5 @@ const TravelPlanSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.models.TravelPlan || ('TravelPlan', TravelPlanSchema);
+export const TravelPlan = mongoose.models.TravelPlan || mongoose.model('TravelPlan', TravelPlanSchema);
+
