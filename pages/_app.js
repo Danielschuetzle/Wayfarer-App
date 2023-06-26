@@ -1,13 +1,24 @@
-import React, { useState } from 'react';
-import GlobalStyle from "../styles";
-import Head from "next/head";
+import React, { useEffect, useState } from 'react';
+import GlobalStyle from '../styles/GlobalStyle';
+import Head from 'next/head';
 
-export default function App({ Component, pageProps }) {
+const App = ({ Component, pageProps }) => {
   const [travelPlans, setTravelPlans] = useState([]);
 
+  useEffect(() => {
+    const storedPlans = localStorage.getItem('travelPlans');
+    if (storedPlans) {
+      setTravelPlans(JSON.parse(storedPlans));
+    }
+  }, []);
+
   const addTravelPlan = (plan) => {
-    setTravelPlans([ ...travelPlans, plan ]);
+    setTravelPlans((prevTravelPlans) => [...prevTravelPlans, plan]);
   };
+
+  useEffect(() => {
+    localStorage.setItem('travelPlans', JSON.stringify(travelPlans));
+  }, [travelPlans]);
 
   const updatedPageProps = {
     ...pageProps,
@@ -19,9 +30,11 @@ export default function App({ Component, pageProps }) {
     <>
       <GlobalStyle />
       <Head>
-        <title>Capstone Project</title>
+        <title>Travel Planner</title>
       </Head>
       <Component {...updatedPageProps} />
     </>
   );
-}
+};
+
+export default App;

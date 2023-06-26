@@ -1,55 +1,85 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
 
-const TravelPlanForm = ({ addTravelPlan }) => {
-  const [plan, setPlan] = useState({
-    name: '',
-    startDate: '',
-    endDate: '',
-    activity: ''
-  });
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
 
-  const handleChange = (event) => {
-    setPlan({
-      ...plan,
-      [event.target.name]: event.target.value
-    });
-  };
+  @media (max-width: 600px) {
+    margin-bottom: 10px;
+  }
+`;
+
+const Label = styled.label`
+  color: #3f72af;
+  margin-bottom: 5px;
+`;
+
+const Input = styled.input`
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+`;
+
+const Button = styled.button`
+  padding: 10px 20px;
+  background-color: #3f72af;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+`;
+const TravelPlanForm = ({ onSubmit }) => {
+  const [planName, setPlanName] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [activity, setActivity] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    // Create a new plan object with the input data
-    // and an activities array with a single activity.
-    const newPlan = {
-      ...plan,
-      activities: [{
-        name: plan.activity,
-        startDate: plan.startDate,
-        endDate: plan.endDate,
-        details: '' // Fill this in with appropriate data
-      }]
-    }
-
-    // Add the new plan
-    addTravelPlan(newPlan);
-
-    // Reset the form
-    setPlan({
-      name: '',
-      startDate: '',
-      endDate: '',
-      activity: ''
-    });
+    const travelPlanData = {
+      planName,
+      startDate,
+      endDate,
+      activity,
+    };
+    onSubmit(travelPlanData);
+    setPlanName('');
+    setStartDate('');
+    setEndDate('');
+    setActivity('');
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="text" name="name" value={plan.name} onChange={handleChange} placeholder="Plan Name" required />
-      <input type="date" name="startDate" value={plan.startDate} onChange={handleChange} required />
-      <input type="date" name="endDate" value={plan.endDate} onChange={handleChange} required />
-      <input type="text" name="activity" value={plan.activity} onChange={handleChange} placeholder="Activity" required />
-      <button type="submit">Save Travel Plan</button>
-    </form>
+    <Form onSubmit={handleSubmit}>
+      <Label>Plan Name:</Label>
+      <Input
+        type="text"
+        value={planName}
+        onChange={(e) => setPlanName(e.target.value)}
+      />
+      <Label>Start Date:</Label>
+      <Input
+        type="date"
+        value={startDate}
+        onChange={(e) => setStartDate(e.target.value)}
+      />
+      <Label>End Date:</Label>
+      <Input
+        type="date"
+        value={endDate}
+        onChange={(e) => setEndDate(e.target.value)}
+      />
+      <Label>Activity:</Label>
+      <Input
+        type="text"
+        value={activity}
+        onChange={(e) => setActivity(e.target.value)}
+      />
+      <Button type="submit">Add Travel Plan</Button>
+    </Form>
   );
 };
 
