@@ -19,5 +19,6 @@ const TravelPlanSchema = new mongoose.Schema({
   },
 });
 
-export const TravelPlan = mongoose.models.TravelPlan || mongoose.model('TravelPlan', TravelPlanSchema);
+const TravelPlan = mongoose.models.TravelPlan || mongoose.model('TravelPlan', TravelPlanSchema);
 
+export default TravelPlan
