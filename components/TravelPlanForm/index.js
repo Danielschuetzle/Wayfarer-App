@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 const Form = styled.form`
@@ -31,18 +31,27 @@ const Button = styled.button`
   border-radius: 4px;
   cursor: pointer;
 `;
+const TravelPlanForm = ({ onSubmit }) => {
+  const [planName, setPlanName] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [activity, setActivity] = useState('');
 
-const TravelPlanForm = ({
-  handleSubmit,
-  planName,
-  setPlanName,
-  startDate,
-  setStartDate,
-  endDate,
-  setEndDate,
-  activity,
-  setActivity,
-}) => {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const travelPlanData = {
+      planName,
+      startDate,
+      endDate,
+      activity,
+    };
+    onSubmit(travelPlanData);
+    setPlanName('');
+    setStartDate('');
+    setEndDate('');
+    setActivity('');
+  };
+
   return (
     <Form onSubmit={handleSubmit}>
       <Label>Plan Name:</Label>

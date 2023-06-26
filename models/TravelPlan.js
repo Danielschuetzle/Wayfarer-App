@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const TravelPlanSchema = new mongoose.Schema({
   name: {
@@ -19,4 +19,4 @@ const TravelPlanSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('TravelPlan', TravelPlanSchema);
+module.exports = mongoose.models.TravelPlan || ('TravelPlan', TravelPlanSchema);
