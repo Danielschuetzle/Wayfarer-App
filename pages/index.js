@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import TravelPlanForm from '../components/TravelPlanForm';
 import TravelPlanList from '../components/TravelPlanList';
+import Calendar from '../components/Calendar';
+import exampleTravelPlans from '../data/exampleTravelPlans';
 
 const Container = styled.div`
   max-width: 800px;
@@ -19,24 +21,8 @@ const Title = styled.h1`
 `;
 
 const TravelPlanner = ({ travelPlans, addTravelPlan }) => {
-  const handleSubmit = async (data) => {
-    try {
-      const response = await fetch('/api/travelplans', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-
-      const responseData = await response.json();
-
-      if (response.ok) {
-        addTravelPlan(responseData);
-      } else {
-        console.error('Error:', responseData);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
+  const handleSubmit = (data) => {
+    addTravelPlan(data);
   };
 
   return (
@@ -44,8 +30,13 @@ const TravelPlanner = ({ travelPlans, addTravelPlan }) => {
       <Title>Wayfarer Planner</Title>
       <TravelPlanForm onSubmit={handleSubmit} />
       <TravelPlanList travelPlans={travelPlans} />
+      <Calendar travelPlans={travelPlans} />
     </Container>
   );
 };
 
-export default TravelPlanner;
+const HomePage = () => {
+  return <TravelPlanner travelPlans={exampleTravelPlans} addTravelPlan={() => {}} />;
+};
+
+export default HomePage;

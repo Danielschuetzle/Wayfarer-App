@@ -1,0 +1,140 @@
+import React, { useState } from 'react';
+import styled from 'styled-components';
+
+const CalendarContainer = styled.div`
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+`;
+
+const CalendarHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+`;
+
+const CalendarTitle = styled.h2`
+  font-size: 20px;
+  color: #3f72af;
+`;
+
+const CalendarControls = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const CalendarButton = styled.button`
+  background-color: #3f72af;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  margin: 0 5px;
+`;
+
+const CalendarGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+`;
+
+const CalendarCell = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: ${(props) => (props.isCurrentDate ? '#3f72af' : '#f5f8fb')};
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  height: 100px;
+  color: ${(props) => (props.isCurrentDate ? '#fff' : 'inherit')};
+  opacity: ${(props) => (props.isBlocked ? 0.5 : 1)};
+`;
+
+const CalendarDay = styled.p`
+  font-weight: bold;
+`;
+
+const CalendarDate = styled.p``;
+
+const Calendar = ({ travelPlans }) => {
+  const [date, setDate] = useState(new Date());
+
+  const currentMonth = date.toLocaleString('default', { month: 'long' });
+  const currentYear = date.getFullYear();
+
+  const getDaysInMonth = (year, month) => {
+    return new Date(year, month + 1, 0).getDate();
+  };
+
+  const getFirstDayOfMonth = (year, month) => {
+    return new Date(year, month, 1).getDay();
+  };
+
+  const handlePrevMonth = () => {
+    const prevMonth = new Date(date.getFullYear(), date.getMonth() - 1, 1);
+    setDate(prevMonth);
+  };
+
+  const handleNextMonth = () => {
+    const nextMonth = new Date(date.getFullYear(), date.getMonth() + 1, 1);
+    setDate(nextMonth);
+  };
+
+  const renderCalendarCells = () => {
+    const daysInMonth = getDaysInMonth(date.getFullYear(), date.getMonth());
+    const firstDayOfMonth = getFirstDayOfMonth(date.getFullYear(), date.getMonth());
+
+    const cells = [];
+
+    for (let i = 0; i < firstDayOfMonth; i++) {
+      cells.push(<CalendarCell key={`empty-${i}`} />);
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const currentDate = new Date(date.getFullYear(), date.getMonth(), day);
+      const isCurrentDay = currentDate.toDateString() === new Date().toDateString();
+
+      let isBlocked = false;
+
+      if (travelPlans && travelPlans.length > 0) {
+        isBlocked = travelPlans.some((plan) => {
+          const planStartDate = new Date(plan.startDate);
+          const planEndDate = new Date(plan.endDate);
+          return currentDate >= planStartDate && currentDate <= planEndDate;
+        });
+      }
+
+      cells.push(
+        <CalendarCell key={day} isCurrentDate={isCurrentDay} isBlocked={isBlocked}>
+          <CalendarDay>{day}</CalendarDay>
+          <CalendarDate>{currentMonth}</CalendarDate>
+        </CalendarCell>
+      );
+    }
+
+    return cells;
+  };
+
+  return (
+    <CalendarContainer>
+      <CalendarHeader>
+        <CalendarControls>
+          <CalendarButton onClick={handlePrevMonth}>Prev</CalendarButton>
+          <CalendarButton onClick={handleNextMonth}>Next</CalendarButton>
+        </CalendarControls>
+        <CalendarTitle>
+          {currentMonth} {currentYear}
+        </CalendarTitle>
+      </CalendarHeader>
+      <CalendarGrid>{renderCalendarCells()}</CalendarGrid>
+    </CalendarContainer>
+  );
+};
+
+export default Calendar;

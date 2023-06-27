@@ -13,6 +13,7 @@ const Title = styled.h2`
 `;
 
 const PlanItem = styled.div`
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -25,28 +26,45 @@ const PlanItem = styled.div`
 `;
 
 const DeleteButton = styled.button`
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
   background-color: #ff6347;
   color: #fff;
   border: none;
   border-radius: 50%;
-  width: 24px;
-  height: 24px;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #e24432;
+  }
 `;
 
 const TravelPlanList = ({ travelPlans, handleDelete }) => {
   const router = useRouter();
 
-  const handlePlanClick = (index) => {
-    router.push(`/travelplans/${index}`);
+  const handlePlanClick = (id) => {
+    router.push(`/travelplans/${id}`);
   };
+
+  function handleDeletePlan(event, id) {
+    event.stopPropagation();
+    handleDelete(id);
+  }
 
   return (
     <Wrapper>
       <Title>Travel Plans</Title>
       {travelPlans.length > 0 ? (
-        travelPlans.map((plan, index) => (
-          <PlanItem key={plan.planName} onClick={() => handlePlanClick(index)}>
+        travelPlans.map((plan) => (
+          <PlanItem key={plan._id} onClick={() => handlePlanClick(plan._id)}>
             <div>
               <h3>{plan.planName}</h3>
               <p>
@@ -54,7 +72,7 @@ const TravelPlanList = ({ travelPlans, handleDelete }) => {
               </p>
               <p>Activity: {plan.activity}</p>
             </div>
-            <DeleteButton onClick={() => handleDelete(index)}>x</DeleteButton>
+            <DeleteButton onClick={(event) => handleDeletePlan(event, plan._id)}>x</DeleteButton>
           </PlanItem>
         ))
       ) : (
