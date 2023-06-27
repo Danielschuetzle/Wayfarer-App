@@ -50,11 +50,11 @@ const CalendarCell = styled.div`
   justify-content: center;
   align-items: center;
   background-color: ${(props) =>
-    props.isCurrentDate ? '#3f72af' : props.isBlocked ? '#3f72af' : '#f5f8fb'};
+    props.isCurrentDate ? '#3f72af' : props.isBlocked ? '#1e90ff' : '#f5f8fb'};
   border: 1px solid #ddd;
   border-radius: 4px;
   height: 100px;
-  color: ${(props) => (props.isCurrentDate ? '#fff' : 'inherit')};
+  color: ${(props) => (props.isCurrentDate || props.isBlocked ? '#fff' : 'inherit')};
   opacity: ${(props) => (props.isBlocked ? 0.5 : 1)};
 `;
 
@@ -137,7 +137,7 @@ const Calendar = ({ travelPlans }) => {
             <CalendarDestinationList>
               {plansForThisDate.map((plan, index) => (
                 <CalendarDestinationItem key={index}>
-                  {plan.destination}
+                  {plan.planName}
                 </CalendarDestinationItem>
               ))}
             </CalendarDestinationList>
