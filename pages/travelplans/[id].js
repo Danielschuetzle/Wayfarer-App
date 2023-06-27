@@ -66,14 +66,12 @@ const TravelPlanDetail = () => {
       const storedPlans = localStorage.getItem('travelPlans');
       if (storedPlans) {
         const travelPlans = JSON.parse(storedPlans);
-        const selectedTravelPlan = travelPlans.find((plan) => plan.id == id);
+        const selectedTravelPlan = travelPlans.find((plan) => plan.id === parseInt(id));
         setTravelPlan(selectedTravelPlan);
       }
     };
 
-    if (id !== undefined) {
-      fetchTravelPlan();
-    }
+    fetchTravelPlan();
   }, [id]);
 
   const handleReturn = () => {
@@ -81,7 +79,7 @@ const TravelPlanDetail = () => {
   };
 
   const handleEdit = () => {
-    router.push(`/travelplans/${id}/edit`);
+    router.push(`/travelplans/edit?id=${id}`);
   };
 
   const handleDelete = () => {
@@ -90,7 +88,7 @@ const TravelPlanDetail = () => {
       const storedPlans = localStorage.getItem('travelPlans');
       if (storedPlans) {
         const travelPlans = JSON.parse(storedPlans);
-        const updatedTravelPlans = travelPlans.filter((plan) => plan.id !== id);
+        const updatedTravelPlans = travelPlans.filter((plan) => plan.id !== parseInt(id));
         localStorage.setItem('travelPlans', JSON.stringify(updatedTravelPlans));
         router.push('/');
       }

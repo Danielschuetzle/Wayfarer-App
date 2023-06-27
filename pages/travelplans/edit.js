@@ -78,9 +78,11 @@ const TravelPlanEdit = () => {
     const storedPlans = localStorage.getItem('travelPlans');
     if (storedPlans) {
       const travelPlans = JSON.parse(storedPlans);
-      const updatedTravelPlans = travelPlans.map((plan) => plan.id === parseInt(id) ? updatedTravelPlan : plan);
+      const updatedTravelPlans = travelPlans.map((plan) =>
+        plan.id === parseInt(id) ? updatedTravelPlan : plan
+      );
       localStorage.setItem('travelPlans', JSON.stringify(updatedTravelPlans));
-      router.push(`/travelplans/${id}`);  // Redirect to the details page after editing
+      router.push(`/travelplans/${id}`); // Redirect to the details page after editing
     }
   };
 
@@ -95,18 +97,8 @@ const TravelPlanEdit = () => {
           placeholder="Plan Name"
           required
         />
-        <Input
-          type="date"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-          required
-        />
-        <Input
-          type="date"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-          required
-        />
+        <Input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} required />
+        <Input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} required />
         <Input
           type="text"
           value={activity}
@@ -114,7 +106,7 @@ const TravelPlanEdit = () => {
           placeholder="Activity"
           required
         />
-        <SubmitButton type="submit">Submit</SubmitButton>
+        <SubmitButton type="submit">Submit changes</SubmitButton>
       </Form>
     </Container>
   );
