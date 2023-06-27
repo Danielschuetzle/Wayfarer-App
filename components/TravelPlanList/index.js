@@ -14,6 +14,7 @@ const Title = styled.h2`
 `;
 
 const PlanItem = styled.div`
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -38,6 +39,9 @@ const DeleteButton = styled.button`
   align-items: center;
   font-size: 14px;
   transition: background-color 0.3s;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 
   &:hover {
     background-color: #e24432;
@@ -64,16 +68,15 @@ const Activity = styled.p`
   margin-top: 10px;
 `;
 
-const TravelPlanList = ({ travelPlans, handleDelete }) => {
+const TravelPlanList = ({ travelPlans }) => {
   const router = useRouter();
 
   const handlePlanClick = (id) => {
     router.push(`/travelplans/${id}`);
   };
 
-  const handleDeletePlan = (event, id) => {
-    event.stopPropagation();
-    handleDelete(id);
+  const handleDeletePlan = (id) => {
+    // Logic to delete a travel plan
   };
 
   return (
@@ -81,7 +84,7 @@ const TravelPlanList = ({ travelPlans, handleDelete }) => {
       <Title>Travel Plans</Title>
       {travelPlans.length > 0 ? (
         travelPlans.map((plan) => (
-          <PlanItem key={plan._id} onClick={() => handlePlanClick(plan._id)}>
+          <PlanItem key={plan.id} onClick={() => handlePlanClick(plan.id)}>
             <InfoWrapper>
               <PlanName>{plan.planName}</PlanName>
               <Duration>
@@ -97,7 +100,7 @@ const TravelPlanList = ({ travelPlans, handleDelete }) => {
               </Duration>
               <Activity>{plan.activity}</Activity>
             </InfoWrapper>
-            <DeleteButton onClick={(event) => handleDeletePlan(event, plan._id)}>x</DeleteButton>
+            <DeleteButton onClick={() => handleDeletePlan(plan.id)}>x</DeleteButton>
           </PlanItem>
         ))
       ) : (

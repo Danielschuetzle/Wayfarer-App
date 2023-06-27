@@ -21,23 +21,15 @@ const Title = styled.h1`
   text-align: center;
 `;
 
-const TravelPlanner = ({ travelPlans, addTravelPlan }) => {
-  const handleSubmit = (data) => {
-    addTravelPlan(data);
-  };
-
+const HomePage = () => {
   return (
     <Container>
       <Title>Wayfarer Planner</Title>
-      <TravelPlanForm onSubmit={handleSubmit} />
-      <TravelPlanList travelPlans={travelPlans} />
-      <Calendar travelPlans={travelPlans} />
+      <TravelPlanForm />
+      <TravelPlanList travelPlans={exampleTravelPlans} />
+      <Calendar travelPlans={exampleTravelPlans} />
     </Container>
   );
-};
-
-const HomePage = () => {
-  return <TravelPlanner travelPlans={exampleTravelPlans} addTravelPlan={() => {}} />;
 };
 
 export default HomePage;
