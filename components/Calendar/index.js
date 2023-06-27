@@ -50,12 +50,11 @@ const CalendarCell = styled.div`
   justify-content: center;
   align-items: center;
   background-color: ${(props) =>
-    props.isCurrentDate ? '#3f72af' : props.isBlocked ? '#1e90ff' : '#f5f8fb'};
+    props.isCurrentDate || props.isTravelDate ? '#3f72af' : '#f5f8fb'};
   border: 1px solid #ddd;
   border-radius: 4px;
   height: 100px;
-  color: ${(props) => (props.isCurrentDate || props.isBlocked ? '#fff' : 'inherit')};
-  opacity: ${(props) => (props.isBlocked ? 0.5 : 1)};
+  color: ${(props) => (props.isCurrentDate || props.isTravelDate ? '#fff' : 'inherit')};
 `;
 
 const CalendarDay = styled.p`
@@ -68,8 +67,7 @@ const CalendarDestinationList = styled.ul`
   text-align: center;
 `;
 
-const CalendarDestinationItem = styled.li`
-`;
+const CalendarDestinationItem = styled.li``;
 
 const Calendar = ({ travelPlans }) => {
   const [date, setDate] = useState(new Date());
@@ -118,28 +116,40 @@ const Calendar = ({ travelPlans }) => {
       const currentDate = new Date(date.getFullYear(), date.getMonth(), day);
       const isCurrentDay = currentDate.toDateString() === new Date().toDateString();
 
-      let plansForThisDate = [];
+      let isTravelDate = false;
 
       if (travelPlans && travelPlans.length > 0) {
-        plansForThisDate = travelPlans.filter((plan) => {
+        travelPlans.forEach((plan) => {
           const planStartDate = new Date(plan.startDate);
           const planEndDate = new Date(plan.endDate);
-          return currentDate >= planStartDate && currentDate <= planEndDate;
+
+          if (
+            currentDate >= planStartDate.setHours(0, 0, 0, 0) &&
+            currentDate <= planEndDate.setHours(23, 59, 59, 999)
+          ) {
+            isTravelDate = true;
+          }
         });
       }
 
-      const isBlocked = plansForThisDate.length > 0;
-
       cells.push(
-        <CalendarCell key={day} isCurrentDate={isCurrentDay} isBlocked={isBlocked}>
+        <CalendarCell
+          key={day}
+          isCurrentDate={isCurrentDay}
+          isTravelDate={isTravelDate}
+        >
           <CalendarDay>{day}</CalendarDay>
-          {isBlocked && (
+          {isTravelDate && (
             <CalendarDestinationList>
-              {plansForThisDate.map((plan, index) => (
-                <CalendarDestinationItem key={index}>
-                  {plan.planName}
-                </CalendarDestinationItem>
-              ))}
+              {travelPlans
+                .filter(
+                  (plan) =>
+                    currentDate >= new Date(plan.startDate).setHours(0, 0, 0, 0) &&
+                    currentDate <= new Date(plan.endDate).setHours(23, 59, 59, 999)
+                )
+                .map((plan, index) => (
+                  <CalendarDestinationItem key={index}>{plan.planName}</CalendarDestinationItem>
+                ))}
             </CalendarDestinationList>
           )}
         </CalendarCell>
