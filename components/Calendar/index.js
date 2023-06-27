@@ -48,7 +48,8 @@ const CalendarCell = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: ${(props) => (props.isCurrentDate ? '#3f72af' : '#f5f8fb')};
+  background-color: ${(props) =>
+    props.isCurrentDate ? '#3f72af' : props.isBlocked ? '#3f72af' : '#f5f8fb'};
   border: 1px solid #ddd;
   border-radius: 4px;
   height: 100px;

@@ -31,6 +31,7 @@ const Button = styled.button`
   border-radius: 4px;
   cursor: pointer;
 `;
+
 const TravelPlanForm = ({ onSubmit }) => {
   const [planName, setPlanName] = useState('');
   const [startDate, setStartDate] = useState('');
@@ -55,29 +56,13 @@ const TravelPlanForm = ({ onSubmit }) => {
   return (
     <Form onSubmit={handleSubmit}>
       <Label>Plan Name:</Label>
-      <Input
-        type="text"
-        value={planName}
-        onChange={(e) => setPlanName(e.target.value)}
-      />
+      <Input type="text" value={planName} onChange={(e) => setPlanName(e.target.value)} />
       <Label>Start Date:</Label>
-      <Input
-        type="date"
-        value={startDate}
-        onChange={(e) => setStartDate(e.target.value)}
-      />
+      <Input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
       <Label>End Date:</Label>
-      <Input
-        type="date"
-        value={endDate}
-        onChange={(e) => setEndDate(e.target.value)}
-      />
+      <Input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
       <Label>Activity:</Label>
-      <Input
-        type="text"
-        value={activity}
-        onChange={(e) => setActivity(e.target.value)}
-      />
+      <Input type="text" value={activity} onChange={(e) => setActivity(e.target.value)} />
       <Button type="submit">Add Travel Plan</Button>
     </Form>
   );

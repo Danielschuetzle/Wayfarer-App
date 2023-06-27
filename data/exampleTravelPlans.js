@@ -2,8 +2,8 @@ const exampleTravelPlans = [
     {
       id: 1,
       planName: 'Trip to Paris',
-      startDate: '2023-07-15',
-      endDate: '2023-07-20',
+      startDate: '2023-06-28',
+      endDate: '2023-06-29',
       activity: 'Sightseeing, Eiffel Tower, Louvre Museum',
     },
     {
