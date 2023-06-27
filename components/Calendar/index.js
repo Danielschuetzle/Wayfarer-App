@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 const CalendarContainer = styled.div`
@@ -62,10 +62,26 @@ const CalendarDay = styled.p`
   font-weight: bold;
 `;
 
-const CalendarDate = styled.p``;
+const CalendarDestinationList = styled.ul`
+  list-style-type: none;
+  padding-left: 0;
+  text-align: center;
+`;
+
+const CalendarDestinationItem = styled.li`
+`;
 
 const Calendar = ({ travelPlans }) => {
   const [date, setDate] = useState(new Date());
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return null;
+  }
 
   const currentMonth = date.toLocaleString('default', { month: 'long' });
   const currentYear = date.getFullYear();
@@ -102,20 +118,30 @@ const Calendar = ({ travelPlans }) => {
       const currentDate = new Date(date.getFullYear(), date.getMonth(), day);
       const isCurrentDay = currentDate.toDateString() === new Date().toDateString();
 
-      let isBlocked = false;
+      let plansForThisDate = [];
 
       if (travelPlans && travelPlans.length > 0) {
-        isBlocked = travelPlans.some((plan) => {
+        plansForThisDate = travelPlans.filter((plan) => {
           const planStartDate = new Date(plan.startDate);
           const planEndDate = new Date(plan.endDate);
           return currentDate >= planStartDate && currentDate <= planEndDate;
         });
       }
 
+      const isBlocked = plansForThisDate.length > 0;
+
       cells.push(
         <CalendarCell key={day} isCurrentDate={isCurrentDay} isBlocked={isBlocked}>
           <CalendarDay>{day}</CalendarDay>
-          <CalendarDate>{currentMonth}</CalendarDate>
+          {isBlocked && (
+            <CalendarDestinationList>
+              {plansForThisDate.map((plan, index) => (
+                <CalendarDestinationItem key={index}>
+                  {plan.destination}
+                </CalendarDestinationItem>
+              ))}
+            </CalendarDestinationList>
+          )}
         </CalendarCell>
       );
     }
