@@ -32,7 +32,7 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const TravelPlanForm = ({ onSubmit }) => {
+const TravelPlanForm = ({ onFormSubmit }) => {
   const [planName, setPlanName] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -46,7 +46,7 @@ const TravelPlanForm = ({ onSubmit }) => {
       endDate,
       activity,
     };
-    onSubmit(travelPlanData);
+    onFormSubmit(travelPlanData);
     setPlanName('');
     setStartDate('');
     setEndDate('');

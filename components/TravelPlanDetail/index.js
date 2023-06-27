@@ -49,6 +49,7 @@ const DeleteButton = styled.button`
   padding: 8px 12px;
   cursor: pointer;
 `;
+
 const TravelPlanDetail = () => {
   const router = useRouter();
   const { id } = router.query;
@@ -56,13 +57,12 @@ const TravelPlanDetail = () => {
   const [travelPlan, setTravelPlan] = useState(null);
 
   useEffect(() => {
-    const fetchTravelPlan = async () => {
-      try {
-        const response = await fetch(`/api/travelplans/${id}`);
-        const data = await response.json();
-        setTravelPlan(data);
-      } catch (error) {
-        console.error('Error fetching travel plan details:', error);
+    const fetchTravelPlan = () => {
+      const storedPlans = localStorage.getItem('travelPlans');
+      if (storedPlans) {
+        const travelPlans = JSON.parse(storedPlans);
+        const selectedTravelPlan = travelPlans.find((plan) => plan.id === id);
+        setTravelPlan(selectedTravelPlan);
       }
     };
 
@@ -79,21 +79,15 @@ const TravelPlanDetail = () => {
     router.push(`/travelplans/${id}/edit`);
   };
 
-  const handleDelete = async () => {
+  const handleDelete = () => {
     const confirmed = window.confirm('Are you sure you want to delete this travel plan?');
     if (confirmed) {
-      try {
-        const response = await fetch(`/api/travelplans/${id}`, {
-          method: 'DELETE',
-        });
-        if (response.ok) {
-          console.log('Travel plan deleted successfully');
-          router.push('/');
-        } else {
-          console.error('Error deleting travel plan');
-        }
-      } catch (error) {
-        console.error('Error deleting travel plan:', error);
+      const storedPlans = localStorage.getItem('travelPlans');
+      if (storedPlans) {
+        const travelPlans = JSON.parse(storedPlans);
+        const updatedTravelPlans = travelPlans.filter((plan) => plan.id !== id);
+        localStorage.setItem('travelPlans', JSON.stringify(updatedTravelPlans));
+        router.push('/');
       }
     }
   };
@@ -105,8 +99,8 @@ const TravelPlanDetail = () => {
   return (
     <Container>
       <Title>Travel Plan Detail Page</Title>
-      <p>ID: {travelPlan._id}</p>
-      <p>Plan Name: {travelPlan.name}</p>
+      <p>ID: {travelPlan.id}</p>
+      <p>Plan Name: {travelPlan.planName}</p>
       <p>Start Date: {travelPlan.startDate}</p>
       <p>End Date: {travelPlan.endDate}</p>
       <p>Activities: {travelPlan.activities.join(', ')}</p>

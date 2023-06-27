@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import TravelPlanForm from '../components/TravelPlanForm';
 import TravelPlanList from '../components/TravelPlanList';
@@ -22,12 +22,23 @@ const Title = styled.h1`
 `;
 
 const HomePage = () => {
+  const [travelPlans, setTravelPlans] = useState(exampleTravelPlans);
+
+  const handleFormSubmit = (travelPlanData) => {
+    const newTravelPlan = {
+      id: Date.now(),
+      ...travelPlanData,
+    };
+    setTravelPlans((prevTravelPlans) => [...prevTravelPlans, newTravelPlan]);
+    console.log('New Travel Plan:', newTravelPlan);
+  };
+
   return (
     <Container>
       <Title>Wayfarer Planner</Title>
-      <TravelPlanForm />
-      <TravelPlanList travelPlans={exampleTravelPlans} />
-      <Calendar travelPlans={exampleTravelPlans} />
+      <TravelPlanForm onFormSubmit={handleFormSubmit} />
+      <TravelPlanList travelPlans={travelPlans} />
+      <Calendar travelPlans={travelPlans} />
     </Container>
   );
 };
