@@ -20,7 +20,6 @@ const Title = styled.h1`
   margin-bottom: 20px;
   text-align: center;
 `;
-
 const HomePage = () => {
   const [travelPlans, setTravelPlans] = useState(exampleTravelPlans);
 
@@ -30,14 +29,18 @@ const HomePage = () => {
       ...travelPlanData,
     };
     setTravelPlans((prevTravelPlans) => [...prevTravelPlans, newTravelPlan]);
-    console.log('New Travel Plan:', newTravelPlan);
+  };
+
+  const handlePlanDelete = (id) => {
+    const updatedTravelPlans = travelPlans.filter((plan) => plan.id !== id);
+    setTravelPlans(updatedTravelPlans);
   };
 
   return (
     <Container>
       <Title>Wayfarer Planner</Title>
       <TravelPlanForm onFormSubmit={handleFormSubmit} />
-      <TravelPlanList travelPlans={travelPlans} />
+      <TravelPlanList travelPlans={travelPlans} onPlanDelete={handlePlanDelete} /> {/* pass state and delete function */}
       <Calendar travelPlans={travelPlans} />
     </Container>
   );

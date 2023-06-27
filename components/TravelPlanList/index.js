@@ -69,18 +69,12 @@ const Activity = styled.p`
   margin-top: 10px;
 `;
 
-const TravelPlanList = () => {
-  const [travelPlans, setTravelPlans] = useState([]);
+const TravelPlanList = ({ travelPlans, onPlanDelete }) => {
   const router = useRouter();
 
   useEffect(() => {
-    let storedTravelPlans = JSON.parse(localStorage.getItem('travelPlans'));
-    if (!Array.isArray(storedTravelPlans) || !storedTravelPlans.length) {
-      storedTravelPlans = exampleTravelPlans;
-      localStorage.setItem('travelPlans', JSON.stringify(storedTravelPlans));
-    }
-    setTravelPlans(storedTravelPlans);
-  }, []);
+    localStorage.setItem('travelPlans', JSON.stringify(travelPlans));
+  }, [travelPlans]);
 
   const handlePlanClick = (id) => {
     router.push(`/travelplans/${id}`);
@@ -88,9 +82,7 @@ const TravelPlanList = () => {
 
   const handleDeletePlan = (e, id) => {
     e.stopPropagation();
-    const updatedTravelPlans = travelPlans.filter((plan) => plan.id !== id);
-    localStorage.setItem('travelPlans', JSON.stringify(updatedTravelPlans));
-    setTravelPlans(updatedTravelPlans);
+    onPlanDelete(id);
   };
 
   return (
