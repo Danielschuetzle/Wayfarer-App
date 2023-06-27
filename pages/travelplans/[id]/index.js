@@ -61,7 +61,7 @@ const TravelPlanDetail = () => {
       const storedPlans = localStorage.getItem('travelPlans');
       if (storedPlans) {
         const travelPlans = JSON.parse(storedPlans);
-        const selectedTravelPlan = travelPlans.find((plan) => plan.id === id);
+        const selectedTravelPlan = travelPlans.find((plan) => plan.id === Number(id));
         setTravelPlan(selectedTravelPlan);
       }
     };
@@ -85,7 +85,7 @@ const TravelPlanDetail = () => {
       const storedPlans = localStorage.getItem('travelPlans');
       if (storedPlans) {
         const travelPlans = JSON.parse(storedPlans);
-        const updatedTravelPlans = travelPlans.filter((plan) => plan.id !== id);
+        const updatedTravelPlans = travelPlans.filter((plan) => plan.id !== Number(id));
         localStorage.setItem('travelPlans', JSON.stringify(updatedTravelPlans));
         router.push('/');
       }
@@ -103,7 +103,7 @@ const TravelPlanDetail = () => {
       <p>Plan Name: {travelPlan.planName}</p>
       <p>Start Date: {travelPlan.startDate}</p>
       <p>End Date: {travelPlan.endDate}</p>
-      <p>Activities: {travelPlan.activities.join(', ')}</p>
+      <p>Activities: {travelPlan.activity}</p>
       <ButtonContainer>
         <ReturnButton onClick={handleReturn}>Return</ReturnButton>
         <EditButton onClick={handleEdit}>Edit</EditButton>
