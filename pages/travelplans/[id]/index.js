@@ -11,16 +11,21 @@ const Container = styled.div`
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
 
-const Title = styled.h1`
+const PlanName = styled.h1`
   color: #3f72af;
   font-size: 24px;
   margin-bottom: 20px;
 `;
 
+const DetailItem = styled.p`
+  color: navy;
+  font-size: 18px;
+`;
+
 const ButtonContainer = styled.div`
   display: flex;
   gap: 10px;
-  margin-bottom: 20px;
+  margin-top: 20px;
 `;
 
 const ReturnButton = styled.button`
@@ -61,7 +66,7 @@ const TravelPlanDetail = () => {
       const storedPlans = localStorage.getItem('travelPlans');
       if (storedPlans) {
         const travelPlans = JSON.parse(storedPlans);
-        const selectedTravelPlan = travelPlans.find((plan) => plan.id === Number(id));
+        const selectedTravelPlan = travelPlans.find((plan) => plan.id == id);
         setTravelPlan(selectedTravelPlan);
       }
     };
@@ -85,7 +90,7 @@ const TravelPlanDetail = () => {
       const storedPlans = localStorage.getItem('travelPlans');
       if (storedPlans) {
         const travelPlans = JSON.parse(storedPlans);
-        const updatedTravelPlans = travelPlans.filter((plan) => plan.id !== Number(id));
+        const updatedTravelPlans = travelPlans.filter((plan) => plan.id !== id);
         localStorage.setItem('travelPlans', JSON.stringify(updatedTravelPlans));
         router.push('/');
       }
@@ -98,12 +103,10 @@ const TravelPlanDetail = () => {
 
   return (
     <Container>
-      <Title>Travel Plan Detail Page</Title>
-      <p>ID: {travelPlan.id}</p>
-      <p>Plan Name: {travelPlan.planName}</p>
-      <p>Start Date: {travelPlan.startDate}</p>
-      <p>End Date: {travelPlan.endDate}</p>
-      <p>Activities: {travelPlan.activity}</p>
+      <PlanName>{travelPlan.planName}</PlanName>
+      <DetailItem>Start Date: {travelPlan.startDate}</DetailItem>
+      <DetailItem>End Date: {travelPlan.endDate}</DetailItem>
+      <DetailItem>Activities: {travelPlan.activity}</DetailItem>
       <ButtonContainer>
         <ReturnButton onClick={handleReturn}>Return</ReturnButton>
         <EditButton onClick={handleEdit}>Edit</EditButton>
