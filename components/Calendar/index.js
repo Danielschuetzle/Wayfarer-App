@@ -23,7 +23,7 @@ const CalendarTitle = styled.h2`
 
 const CalendarControls = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
 `;
 
@@ -125,13 +125,11 @@ const Calendar = ({ travelPlans }) => {
   return (
     <CalendarContainer>
       <CalendarHeader>
+        <CalendarTitle>{currentMonth} {currentYear}</CalendarTitle>
         <CalendarControls>
           <CalendarButton onClick={handlePrevMonth}>Prev</CalendarButton>
           <CalendarButton onClick={handleNextMonth}>Next</CalendarButton>
         </CalendarControls>
-        <CalendarTitle>
-          {currentMonth} {currentYear}
-        </CalendarTitle>
       </CalendarHeader>
       <CalendarGrid>{renderCalendarCells()}</CalendarGrid>
     </CalendarContainer>

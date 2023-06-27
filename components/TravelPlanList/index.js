@@ -10,10 +10,10 @@ const Title = styled.h2`
   color: #3f72af;
   font-size: 20px;
   margin-bottom: 10px;
+  text-align: center;
 `;
 
 const PlanItem = styled.div`
-  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -26,9 +26,6 @@ const PlanItem = styled.div`
 `;
 
 const DeleteButton = styled.button`
-  position: absolute;
-  top: 8px;
-  right: 8px;
   width: 24px;
   height: 24px;
   background-color: #ff6347;
@@ -47,6 +44,26 @@ const DeleteButton = styled.button`
   }
 `;
 
+const InfoWrapper = styled.div`
+  flex-grow: 1;
+`;
+
+const PlanName = styled.h3`
+  color: #3f72af;
+  margin-bottom: 5px;
+`;
+
+const Duration = styled.p`
+  color: #5188c6;
+  font-weight: bold;
+`;
+
+const Activity = styled.p`
+  color: navy;
+  font-size: 14px;
+  margin-top: 10px;
+`;
+
 const TravelPlanList = ({ travelPlans, handleDelete }) => {
   const router = useRouter();
 
@@ -54,10 +71,10 @@ const TravelPlanList = ({ travelPlans, handleDelete }) => {
     router.push(`/travelplans/${id}`);
   };
 
-  function handleDeletePlan(event, id) {
+  const handleDeletePlan = (event, id) => {
     event.stopPropagation();
     handleDelete(id);
-  }
+  };
 
   return (
     <Wrapper>
@@ -65,13 +82,21 @@ const TravelPlanList = ({ travelPlans, handleDelete }) => {
       {travelPlans.length > 0 ? (
         travelPlans.map((plan) => (
           <PlanItem key={plan._id} onClick={() => handlePlanClick(plan._id)}>
-            <div>
-              <h3>{plan.planName}</h3>
-              <p>
-                Start Date: {plan.startDate} - End Date: {plan.endDate}
-              </p>
-              <p>Activity: {plan.activity}</p>
-            </div>
+            <InfoWrapper>
+              <PlanName>{plan.planName}</PlanName>
+              <Duration>
+                {`${new Date(plan.startDate).toLocaleDateString('en-GB', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                })} - ${new Date(plan.endDate).toLocaleDateString('en-GB', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                })}`}
+              </Duration>
+              <Activity>{plan.activity}</Activity>
+            </InfoWrapper>
             <DeleteButton onClick={(event) => handleDeletePlan(event, plan._id)}>x</DeleteButton>
           </PlanItem>
         ))
