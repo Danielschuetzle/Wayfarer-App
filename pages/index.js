@@ -18,6 +18,7 @@ const Title = styled.h1`
   color: #3f72af;
   font-size: 24px;
   margin-bottom: 20px;
+  text-align: center;
 `;
 
 const TravelPlanner = ({ travelPlans, addTravelPlan }) => {

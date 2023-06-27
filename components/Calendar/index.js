@@ -11,8 +11,9 @@ const CalendarContainer = styled.div`
 
 const CalendarHeader = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  flex-direction: column;
   margin-bottom: 10px;
 `;
 
