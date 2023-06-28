@@ -27,13 +27,14 @@ const CalendarButton = styled.button`
   border: none;
   border-radius: 4px;
   padding: 10px;
-  margin: 20px 0;
+  margin: 0 auto 20px;
+  display: block;
   cursor: pointer;
 `;
 
 const HomePage = () => {
   const [travelPlans, setTravelPlans] = useState(exampleTravelPlans);
-  const [isCalendarOpen, setIsCalendarOpen] = useState(false);  // new state to control the visibility of the Calendar
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   const handleFormSubmit = (travelPlanData) => {
     const newTravelPlan = {
@@ -49,18 +50,18 @@ const HomePage = () => {
   };
 
   const handleCalendarToggle = () => {
-    setIsCalendarOpen(!isCalendarOpen);  // toggle the calendar visibility
+    setIsCalendarOpen(!isCalendarOpen);
   };
 
   return (
     <Container>
       <Title>Wayfarer Planner</Title>
       <TravelPlanForm onFormSubmit={handleFormSubmit} />
-      <TravelPlanList travelPlans={travelPlans} onPlanDelete={handlePlanDelete} /> {/* pass state and delete function */}
+      <TravelPlanList travelPlans={travelPlans} onPlanDelete={handlePlanDelete} />
       <CalendarButton onClick={handleCalendarToggle}>
         {isCalendarOpen ? 'Close Calendar' : 'Open Calendar'}
       </CalendarButton>
-      {isCalendarOpen && <Calendar travelPlans={travelPlans} />}  {/* show Calendar only if isCalendarOpen is true */}
+      {isCalendarOpen && <Calendar travelPlans={travelPlans} />}
     </Container>
   );
 };
