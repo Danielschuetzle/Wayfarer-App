@@ -60,13 +60,21 @@ const PlanName = styled.h3`
 
 const Duration = styled.p`
   color: #5188c6;
-  font-weight: bold;
+  font-weight: bolder;
 `;
 
 const Activity = styled.p`
   color: navy;
   font-size: 14px;
   margin-top: 10px;
+`;
+
+// New styled component for tag
+const Tag = styled.p`
+  color: navy;
+  font-size: 14px;
+  margin-top: 10px;
+  font-weight: bold;
 `;
 
 const TravelPlanList = ({ travelPlans, onPlanDelete }) => {
@@ -105,6 +113,7 @@ const TravelPlanList = ({ travelPlans, onPlanDelete }) => {
                 })}`}
               </Duration>
               <Activity>{plan.activity}</Activity>
+              <Tag>{plan.tag}</Tag> {/* Render the tag here */}
             </InfoWrapper>
             <DeleteButton onClick={(e) => handleDeletePlan(e, plan.id)}>x</DeleteButton>
           </PlanItem>
