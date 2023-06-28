@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import TravelPlanForm from '../components/TravelPlanForm';
 import TravelPlanList from '../components/TravelPlanList';
 import Calendar from '../components/Calendar';
-import Navigation from '../components/Navigation';
 import exampleTravelPlans from '../data/exampleTravelPlans';
 
 const Container = styled.div`
@@ -54,10 +53,13 @@ const HomePage = () => {
     setIsCalendarOpen(!isCalendarOpen);
   };
 
+  const setPicture = (picture) => {
+  };
+
   return (
     <Container>
       <Title>Wayfarer Planner</Title>
-      <TravelPlanForm onFormSubmit={handleFormSubmit} />
+      <TravelPlanForm onFormSubmit={handleFormSubmit} setPicture={setPicture} />
       <TravelPlanList travelPlans={travelPlans} onPlanDelete={handlePlanDelete} />
       <CalendarButton onClick={handleCalendarToggle}>
         {isCalendarOpen ? 'Close Calendar' : 'Open Calendar'}

@@ -46,14 +46,9 @@ const TravelPlanForm = ({ onFormSubmit, setPicture }) => {
   const [endDate, setEndDate] = useState('');
   const [activity, setActivity] = useState('');
   const [tag, setTag] = useState('');
-  const [picture, setLocalPicture] = useState(null);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    // Create a new FormData object to store the form data
-    const formData = new FormData();
-    formData.append('picture', picture);
 
     const travelPlanData = {
       planName,
@@ -61,7 +56,7 @@ const TravelPlanForm = ({ onFormSubmit, setPicture }) => {
       endDate,
       activity,
       tag,
-      picture: formData, // Add the picture data to the travel plan data
+      picture: null, // Default value for the picture
     };
 
     onFormSubmit(travelPlanData);
@@ -81,8 +76,8 @@ const TravelPlanForm = ({ onFormSubmit, setPicture }) => {
           <Input type="text" value={planName} onChange={(e) => setPlanName(e.target.value)} />
         </FieldContainer>
         <FieldContainer>
-          <Label>Plan Picture:</Label>
-          <Input type="file" accept="image/*" onChange={(e) => setLocalPicture(e.target.files[0])} />
+          <Label>Picture:</Label>
+          <Input type="file" accept="image/*" onChange={(e) => setPicture(e.target.files[0])} />
         </FieldContainer>
       </FlexContainer>
       <FlexContainer>
