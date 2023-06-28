@@ -25,28 +25,24 @@ const PlanItem = styled.div`
   border-radius: 4px;
   margin-bottom: 10px;
   cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #f5f8fb;
+  }
 `;
 
-const DeleteButton = styled.button`
-  width: 24px;
-  height: 24px;
-  background-color: #ff6347;
-  color: #fff;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 14px;
-  transition: background-color 0.3s;
+const Tag = styled.p`
   position: absolute;
   top: 10px;
   right: 10px;
-
-  &:hover {
-    background-color: #e24432;
-  }
+  color: navy;
+  font-size: 14px;
+  font-weight: bold;
+  background-color: #3f72af;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
 `;
 
 const InfoWrapper = styled.div`
@@ -60,7 +56,7 @@ const PlanName = styled.h3`
 
 const Duration = styled.p`
   color: #5188c6;
-  font-weight: bold;
+  font-weight: bolder;
 `;
 
 const Activity = styled.p`
@@ -69,7 +65,7 @@ const Activity = styled.p`
   margin-top: 10px;
 `;
 
-const TravelPlanList = ({ travelPlans, onPlanDelete }) => {
+const TravelPlanList = ({ travelPlans }) => {
   const router = useRouter();
 
   useEffect(() => {
@@ -78,11 +74,6 @@ const TravelPlanList = ({ travelPlans, onPlanDelete }) => {
 
   const handlePlanClick = (id) => {
     router.push(`/travelplans/${id}`);
-  };
-
-  const handleDeletePlan = (e, id) => {
-    e.stopPropagation();
-    onPlanDelete(id);
   };
 
   return (
@@ -97,16 +88,16 @@ const TravelPlanList = ({ travelPlans, onPlanDelete }) => {
                 {`${new Date(plan.startDate).toLocaleDateString('en-GB', {
                   day: '2-digit',
                   month: '2-digit',
-                  year: 'numeric',
+                  year: '2-digit',
                 })} - ${new Date(plan.endDate).toLocaleDateString('en-GB', {
                   day: '2-digit',
                   month: '2-digit',
-                  year: 'numeric',
+                  year: '2-digit',
                 })}`}
               </Duration>
               <Activity>{plan.activity}</Activity>
             </InfoWrapper>
-            <DeleteButton onClick={(e) => handleDeletePlan(e, plan.id)}>x</DeleteButton>
+            <Tag>{plan.tag}</Tag>
           </PlanItem>
         ))
       ) : (

@@ -47,6 +47,7 @@ const TravelPlanEdit = () => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [activity, setActivity] = useState('');
+  const [tag, setTag] = useState(''); // New state for tag
 
   useEffect(() => {
     const fetchTravelPlan = () => {
@@ -58,6 +59,7 @@ const TravelPlanEdit = () => {
         setStartDate(selectedTravelPlan.startDate);
         setEndDate(selectedTravelPlan.endDate);
         setActivity(selectedTravelPlan.activity);
+        setTag(selectedTravelPlan.tag); // Set the tag value from stored plans
       }
     };
 
@@ -74,6 +76,7 @@ const TravelPlanEdit = () => {
       startDate,
       endDate,
       activity,
+      tag, // Add the tag value to updated plan
     };
     const storedPlans = localStorage.getItem('travelPlans');
     if (storedPlans) {
@@ -104,6 +107,13 @@ const TravelPlanEdit = () => {
           value={activity}
           onChange={(e) => setActivity(e.target.value)}
           placeholder="Activity"
+          required
+        />
+        <Input
+          type="text"
+          value={tag}
+          onChange={(e) => setTag(e.target.value)}
+          placeholder="Tag"
           required
         />
         <SubmitButton type="submit">Submit changes</SubmitButton>

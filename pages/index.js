@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import TravelPlanForm from '../components/TravelPlanForm';
 import TravelPlanList from '../components/TravelPlanList';
 import Calendar from '../components/Calendar';
+import Navigation from '../components/Navigation';
 import exampleTravelPlans from '../data/exampleTravelPlans';
 
 const Container = styled.div`
@@ -20,8 +21,21 @@ const Title = styled.h1`
   margin-bottom: 20px;
   text-align: center;
 `;
+
+const CalendarButton = styled.button`
+  background-color: #3f72af;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px;
+  margin: 0 auto 20px;
+  display: block;
+  cursor: pointer;
+`;
+
 const HomePage = () => {
   const [travelPlans, setTravelPlans] = useState(exampleTravelPlans);
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   const handleFormSubmit = (travelPlanData) => {
     const newTravelPlan = {
@@ -36,12 +50,19 @@ const HomePage = () => {
     setTravelPlans(updatedTravelPlans);
   };
 
+  const handleCalendarToggle = () => {
+    setIsCalendarOpen(!isCalendarOpen);
+  };
+
   return (
     <Container>
       <Title>Wayfarer Planner</Title>
       <TravelPlanForm onFormSubmit={handleFormSubmit} />
-      <TravelPlanList travelPlans={travelPlans} onPlanDelete={handlePlanDelete} /> {/* pass state and delete function */}
-      <Calendar travelPlans={travelPlans} />
+      <TravelPlanList travelPlans={travelPlans} onPlanDelete={handlePlanDelete} />
+      <CalendarButton onClick={handleCalendarToggle}>
+        {isCalendarOpen ? 'Close Calendar' : 'Open Calendar'}
+      </CalendarButton>
+      {isCalendarOpen && <Calendar travelPlans={travelPlans} />}
     </Container>
   );
 };
