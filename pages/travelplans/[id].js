@@ -60,6 +60,12 @@ const DeleteButton = styled.button`
   cursor: pointer;
 `;
 
+const Image = styled.img`
+  max-width: 100%;
+  border-radius: 4px;
+  margin-bottom: 20px;
+`;
+
 const TravelPlanDetail = () => {
   const router = useRouter();
   const { id } = router.query;
@@ -107,10 +113,11 @@ const TravelPlanDetail = () => {
   return (
     <Container>
       <PlanName>{travelPlan.planName}</PlanName>
+      {travelPlan.picture && <Image src={URL.createObjectURL(travelPlan.picture)} alt="Plan Picture" />}
       <DetailItem>Start Date: {travelPlan.startDate}</DetailItem>
       <DetailItem>End Date: {travelPlan.endDate}</DetailItem>
       <DetailItem>Activities: {travelPlan.activity}</DetailItem>
-      <Tag>Tag: {travelPlan.tag}</Tag> {/* Display the tag */}
+      <Tag>Tag: {travelPlan.tag}</Tag>
       <ButtonContainer>
         <ReturnButton onClick={handleReturn}>Return</ReturnButton>
         <EditButton onClick={handleEdit}>Edit</EditButton>

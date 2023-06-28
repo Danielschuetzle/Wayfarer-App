@@ -40,34 +40,51 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const TravelPlanForm = ({ onFormSubmit }) => {
+const TravelPlanForm = ({ onFormSubmit, setPicture }) => {
   const [planName, setPlanName] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [activity, setActivity] = useState('');
   const [tag, setTag] = useState('');
+  const [picture, setLocalPicture] = useState(null);
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    // Create a new FormData object to store the form data
+    const formData = new FormData();
+    formData.append('picture', picture);
+
     const travelPlanData = {
       planName,
       startDate,
       endDate,
       activity,
       tag,
+      picture: formData, // Add the picture data to the travel plan data
     };
+
     onFormSubmit(travelPlanData);
     setPlanName('');
     setStartDate('');
     setEndDate('');
     setActivity('');
     setTag('');
+    setPicture(null); // Reset the picture state
   };
 
   return (
     <Form onSubmit={handleSubmit}>
-      <Label>Plan Name:</Label>
-      <Input type="text" value={planName} onChange={(e) => setPlanName(e.target.value)} />
+      <FlexContainer>
+        <FieldContainer>
+          <Label>Plan Name:</Label>
+          <Input type="text" value={planName} onChange={(e) => setPlanName(e.target.value)} />
+        </FieldContainer>
+        <FieldContainer>
+          <Label>Plan Picture:</Label>
+          <Input type="file" accept="image/*" onChange={(e) => setLocalPicture(e.target.files[0])} />
+        </FieldContainer>
+      </FlexContainer>
       <FlexContainer>
         <FieldContainer>
           <Label>Start Date:</Label>

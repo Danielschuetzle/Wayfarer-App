@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 import exampleTravelPlans from '../../data/exampleTravelPlans';
@@ -30,6 +30,12 @@ const PlanItem = styled.div`
   &:hover {
     background-color: #f5f8fb;
   }
+
+  /* Add the following styles to display the picture */
+  background-image: ${({ picture }) => (picture ? `url(${URL.createObjectURL(picture)})` : 'none')};
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 `;
 
 const Tag = styled.p`
@@ -65,7 +71,7 @@ const Activity = styled.p`
   margin-top: 10px;
 `;
 
-const TravelPlanList = ({ travelPlans }) => {
+const TravelPlanList = ({ travelPlans, picture, setPicture }) => {
   const router = useRouter();
 
   useEffect(() => {
@@ -81,7 +87,7 @@ const TravelPlanList = ({ travelPlans }) => {
       <Title>Travel Plans</Title>
       {travelPlans.length > 0 ? (
         travelPlans.map((plan) => (
-          <PlanItem key={plan.id} onClick={() => handlePlanClick(plan.id)}>
+          <PlanItem key={plan.id} onClick={() => handlePlanClick(plan.id)} picture={picture}>
             <InfoWrapper>
               <PlanName>{plan.planName}</PlanName>
               <Duration>
