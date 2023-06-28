@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import TravelPlanForm from '../components/TravelPlanForm';
 import TravelPlanList from '../components/TravelPlanList';
+import Calendar from '../components/Calendar';
+import exampleTravelPlans from '../data/exampleTravelPlans';
 
 const Container = styled.div`
   max-width: 800px;
@@ -16,36 +18,32 @@ const Title = styled.h1`
   color: #3f72af;
   font-size: 24px;
   margin-bottom: 20px;
+  text-align: center;
 `;
+const HomePage = () => {
+  const [travelPlans, setTravelPlans] = useState(exampleTravelPlans);
 
-const TravelPlanner = ({ travelPlans, addTravelPlan }) => {
-  const handleSubmit = async (data) => {
-    try {
-      const response = await fetch('/api/travelplans', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
+  const handleFormSubmit = (travelPlanData) => {
+    const newTravelPlan = {
+      id: Date.now(),
+      ...travelPlanData,
+    };
+    setTravelPlans((prevTravelPlans) => [...prevTravelPlans, newTravelPlan]);
+  };
 
-      const responseData = await response.json();
-
-      if (response.ok) {
-        addTravelPlan(responseData);
-      } else {
-        console.error('Error:', responseData);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
+  const handlePlanDelete = (id) => {
+    const updatedTravelPlans = travelPlans.filter((plan) => plan.id !== id);
+    setTravelPlans(updatedTravelPlans);
   };
 
   return (
     <Container>
       <Title>Wayfarer Planner</Title>
-      <TravelPlanForm onSubmit={handleSubmit} />
-      <TravelPlanList travelPlans={travelPlans} />
+      <TravelPlanForm onFormSubmit={handleFormSubmit} />
+      <TravelPlanList travelPlans={travelPlans} onPlanDelete={handlePlanDelete} /> {/* pass state and delete function */}
+      <Calendar travelPlans={travelPlans} />
     </Container>
   );
 };
 
-export default TravelPlanner;
+export default HomePage;

@@ -12,10 +12,6 @@ const App = ({ Component, pageProps }) => {
     }
   }, []);
 
-  const addTravelPlan = (plan) => {
-    setTravelPlans((prevTravelPlans) => [...prevTravelPlans, plan]);
-  };
-
   useEffect(() => {
     localStorage.setItem('travelPlans', JSON.stringify(travelPlans));
   }, [travelPlans]);
@@ -23,7 +19,6 @@ const App = ({ Component, pageProps }) => {
   const updatedPageProps = {
     ...pageProps,
     travelPlans,
-    addTravelPlan,
   };
 
   return (

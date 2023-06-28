@@ -11,16 +11,21 @@ const Container = styled.div`
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
 
-const Title = styled.h1`
+const PlanName = styled.h1`
   color: #3f72af;
   font-size: 24px;
   margin-bottom: 20px;
 `;
 
+const DetailItem = styled.p`
+  color: navy;
+  font-size: 18px;
+`;
+
 const ButtonContainer = styled.div`
   display: flex;
   gap: 10px;
-  margin-bottom: 20px;
+  margin-top: 20px;
 `;
 
 const ReturnButton = styled.button`
@@ -49,6 +54,7 @@ const DeleteButton = styled.button`
   padding: 8px 12px;
   cursor: pointer;
 `;
+
 const TravelPlanDetail = () => {
   const router = useRouter();
   const { id } = router.query;
@@ -56,19 +62,16 @@ const TravelPlanDetail = () => {
   const [travelPlan, setTravelPlan] = useState(null);
 
   useEffect(() => {
-    const fetchTravelPlan = async () => {
-      try {
-        const response = await fetch(`/api/travelplans/${id}`);
-        const data = await response.json();
-        setTravelPlan(data);
-      } catch (error) {
-        console.error('Error fetching travel plan details:', error);
+    const fetchTravelPlan = () => {
+      const storedPlans = localStorage.getItem('travelPlans');
+      if (storedPlans) {
+        const travelPlans = JSON.parse(storedPlans);
+        const selectedTravelPlan = travelPlans.find((plan) => plan.id === parseInt(id));
+        setTravelPlan(selectedTravelPlan);
       }
     };
 
-    if (id !== undefined) {
-      fetchTravelPlan();
-    }
+    fetchTravelPlan();
   }, [id]);
 
   const handleReturn = () => {
@@ -76,24 +79,18 @@ const TravelPlanDetail = () => {
   };
 
   const handleEdit = () => {
-    router.push(`/travelplans/${id}/edit`);
+    router.push(`/travelplans/edit?id=${id}`);
   };
 
-  const handleDelete = async () => {
+  const handleDelete = () => {
     const confirmed = window.confirm('Are you sure you want to delete this travel plan?');
     if (confirmed) {
-      try {
-        const response = await fetch(`/api/travelplans/${id}`, {
-          method: 'DELETE',
-        });
-        if (response.ok) {
-          console.log('Travel plan deleted successfully');
-          router.push('/');
-        } else {
-          console.error('Error deleting travel plan');
-        }
-      } catch (error) {
-        console.error('Error deleting travel plan:', error);
+      const storedPlans = localStorage.getItem('travelPlans');
+      if (storedPlans) {
+        const travelPlans = JSON.parse(storedPlans);
+        const updatedTravelPlans = travelPlans.filter((plan) => plan.id !== parseInt(id));
+        localStorage.setItem('travelPlans', JSON.stringify(updatedTravelPlans));
+        router.push('/');
       }
     }
   };
@@ -104,12 +101,10 @@ const TravelPlanDetail = () => {
 
   return (
     <Container>
-      <Title>Travel Plan Detail Page</Title>
-      <p>ID: {travelPlan._id}</p>
-      <p>Plan Name: {travelPlan.name}</p>
-      <p>Start Date: {travelPlan.startDate}</p>
-      <p>End Date: {travelPlan.endDate}</p>
-      <p>Activities: {travelPlan.activities.join(', ')}</p>
+      <PlanName>{travelPlan.planName}</PlanName>
+      <DetailItem>Start Date: {travelPlan.startDate}</DetailItem>
+      <DetailItem>End Date: {travelPlan.endDate}</DetailItem>
+      <DetailItem>Activities: {travelPlan.activity}</DetailItem>
       <ButtonContainer>
         <ReturnButton onClick={handleReturn}>Return</ReturnButton>
         <EditButton onClick={handleEdit}>Edit</EditButton>
