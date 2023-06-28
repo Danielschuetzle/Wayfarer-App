@@ -60,10 +60,33 @@ const DeleteButton = styled.button`
   cursor: pointer;
 `;
 
+const UploadButtonContainer = styled.div`
+  margin-top: 20px;
+  text-align: center;
+`;
+
+const UploadButton = styled.label`
+  background-color: #3f72af;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+`;
+
+const FileInput = styled.input`
+  display: none;
+`;
+
+const ImageContainer = styled.div`
+  margin-top: 20px;
+  text-align: center;
+`;
+
 const Image = styled.img`
   max-width: 100%;
   border-radius: 4px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 `;
 
 const TravelPlanDetail = () => {
@@ -106,6 +129,20 @@ const TravelPlanDetail = () => {
     }
   };
 
+  const handlePictureUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setTravelPlan((prevTravelPlan) => ({
+          ...prevTravelPlan,
+          picture: reader.result,
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   if (!travelPlan) {
     return <p>Loading...</p>;
   }
@@ -113,7 +150,6 @@ const TravelPlanDetail = () => {
   return (
     <Container>
       <PlanName>{travelPlan.planName}</PlanName>
-      {travelPlan.picture && <Image src={URL.createObjectURL(travelPlan.picture)} alt="Plan Picture" />}
       <DetailItem>Start Date: {travelPlan.startDate}</DetailItem>
       <DetailItem>End Date: {travelPlan.endDate}</DetailItem>
       <DetailItem>Activities: {travelPlan.activity}</DetailItem>
@@ -123,6 +159,17 @@ const TravelPlanDetail = () => {
         <EditButton onClick={handleEdit}>Edit</EditButton>
         <DeleteButton onClick={handleDelete}>Delete</DeleteButton>
       </ButtonContainer>
+      {travelPlan.picture && (
+        <ImageContainer>
+          <Image src={travelPlan.picture} alt="Plan Picture" />
+        </ImageContainer>
+      )}
+      <UploadButtonContainer>
+        <UploadButton>
+          Upload Picture
+          <FileInput type="file" accept="image/*" onChange={handlePictureUpload} />
+        </UploadButton>
+      </UploadButtonContainer>
     </Container>
   );
 };
