@@ -5,11 +5,10 @@ import styled from 'styled-components';
 const NavigationContainer = styled.div`
   position: fixed;
   bottom: 0;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  background-color: #3f72af;
-  padding: 10px 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  max-width: 400px;
 `;
 
 const NavButton = styled.button`
@@ -26,13 +25,13 @@ const NavButton = styled.button`
   }
 `;
 
-const Navigation = ({ toggleCalendar }) => {
+const Navigation = () => {
   const router = useRouter();
 
   return (
     <NavigationContainer>
       <NavButton onClick={() => router.push('/')}>Home</NavButton>
-      <NavButton onClick={toggleCalendar}>Calendar</NavButton>
+      <NavButton disabled>Coming Soon</NavButton>
     </NavigationContainer>
   );
 };
