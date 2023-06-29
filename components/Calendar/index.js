@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useRouter } from 'next/router';
 
 const CalendarContainer = styled.div`
   margin-top: 20px;
@@ -55,6 +56,7 @@ const CalendarCell = styled.div`
   border-radius: 4px;
   height: 100px;
   color: ${(props) => (props.isCurrentDate || props.isTravelDate ? '#fff' : 'inherit')};
+  cursor: ${(props) => (props.isTravelDate ? 'pointer' : 'default')};
 `;
 
 const CalendarDay = styled.p`
@@ -72,6 +74,7 @@ const CalendarDestinationItem = styled.li``;
 const Calendar = ({ travelPlans }) => {
   const [date, setDate] = useState(new Date());
   const [isClient, setIsClient] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setIsClient(true);
@@ -102,6 +105,12 @@ const Calendar = ({ travelPlans }) => {
     setDate(nextMonth);
   };
 
+  const handleCellClick = (travelPlanId) => {
+    if (travelPlanId) {
+      router.push(`/travelplans/${travelPlanId}`);
+    }
+  };
+
   const renderCalendarCells = () => {
     const daysInMonth = getDaysInMonth(date.getFullYear(), date.getMonth());
     const firstDayOfMonth = getFirstDayOfMonth(date.getFullYear(), date.getMonth());
@@ -117,6 +126,7 @@ const Calendar = ({ travelPlans }) => {
       const isCurrentDay = currentDate.toDateString() === new Date().toDateString();
 
       let isTravelDate = false;
+      let travelPlanId;
 
       if (travelPlans && travelPlans.length > 0) {
         travelPlans.forEach((plan) => {
@@ -128,6 +138,7 @@ const Calendar = ({ travelPlans }) => {
             currentDate <= planEndDate.setHours(23, 59, 59, 999)
           ) {
             isTravelDate = true;
+            travelPlanId = plan.id;
           }
         });
       }
@@ -137,6 +148,7 @@ const Calendar = ({ travelPlans }) => {
           key={day}
           isCurrentDate={isCurrentDay}
           isTravelDate={isTravelDate}
+          onClick={() => handleCellClick(travelPlanId)}
         >
           <CalendarDay>{day}</CalendarDay>
           {isTravelDate && (
