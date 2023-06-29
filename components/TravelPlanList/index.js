@@ -26,7 +26,7 @@ const PlanItem = styled.div`
   margin-bottom: 10px;
   cursor: pointer;
   transition: background-color 0.3s;
-  background-image: ${(props) => (props.image ? `url(${props.image})` : 'none')};
+  background-image: ${(props) => (props.image ? `url(${props.image})` : `url("/default_background.avif")`)};
   background-size: cover;
   background-position: center;
 `;
@@ -75,12 +75,6 @@ const Budget = styled.p`
   }
 `;
 
-const DefaultBackground = styled.div`
-  background-image: url('/default_background.avif');
-  background-size: cover;
-  background-position: center;
-`;
-
 const TravelPlanList = ({ travelPlans }) => {
   const router = useRouter();
 
@@ -102,43 +96,22 @@ const TravelPlanList = ({ travelPlans }) => {
             onClick={() => handlePlanClick(plan.id)}
             image={plan.picture ? plan.picture : null}
           >
-            {plan.picture ? (
-              <InfoWrapper>
-                <PlanName>{plan.planName}</PlanName>
-                <Duration>
-                  {`${new Date(plan.startDate).toLocaleDateString('en-GB', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: '2-digit',
-                  })} - ${new Date(plan.endDate).toLocaleDateString('en-GB', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: '2-digit',
-                  })}`}
-                </Duration>
-                <Activity>{plan.activity}</Activity>
-                <Budget>{plan.budget}</Budget>
-              </InfoWrapper>
-            ) : (
-              <DefaultBackground>
-                <InfoWrapper>
-                  <PlanName>{plan.planName}</PlanName>
-                  <Duration>
-                    {`${new Date(plan.startDate).toLocaleDateString('en-GB', {
-                      day: '2-digit',
-                      month: '2-digit',
-                      year: '2-digit',
-                    })} - ${new Date(plan.endDate).toLocaleDateString('en-GB', {
-                      day: '2-digit',
-                      month: '2-digit',
-                      year: '2-digit',
-                    })}`}
-                  </Duration>
-                  <Activity>{plan.activity}</Activity>
-                  <Budget>{plan.budget}</Budget>
-                </InfoWrapper>
-              </DefaultBackground>
-            )}
+            <InfoWrapper>
+              <PlanName>{plan.planName}</PlanName>
+              <Duration>
+                {`${new Date(plan.startDate).toLocaleDateString('en-GB', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: '2-digit',
+                })} - ${new Date(plan.endDate).toLocaleDateString('en-GB', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: '2-digit',
+                })}`}
+              </Duration>
+              <Activity>{plan.activity}</Activity>
+              <Budget>{plan.budget}</Budget>
+            </InfoWrapper>
             <Tag>{plan.tag}</Tag>
           </PlanItem>
         ))

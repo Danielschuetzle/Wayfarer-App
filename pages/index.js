@@ -21,13 +21,13 @@ const Title = styled.h1`
   text-align: center;
 `;
 
-const CalendarButton = styled.button`
+const ActionButton = styled.button`
   background-color: #3f72af;
   color: #fff;
   border: none;
   border-radius: 4px;
   padding: 10px;
-  margin: 0 auto 20px;
+  margin: 10px auto;
   display: block;
   cursor: pointer;
 `;
@@ -35,6 +35,7 @@ const CalendarButton = styled.button`
 const HomePage = () => {
   const [travelPlans, setTravelPlans] = useState(exampleTravelPlans);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
   const handleFormSubmit = (travelPlanData) => {
     const newTravelPlan = {
@@ -54,14 +55,21 @@ const HomePage = () => {
     setIsCalendarOpen(!isCalendarOpen);
   };
 
+  const handleFormToggle = () => {
+    setIsFormOpen(!isFormOpen);
+  };
+
   return (
     <Container>
       <Title>Wayfarer Planner</Title>
-      <TravelPlanForm onFormSubmit={handleFormSubmit} />
+      <ActionButton onClick={handleFormToggle}>
+        {isFormOpen ? 'Cancel' : 'Add New Travel Plan'}
+      </ActionButton>
+      {isFormOpen && <TravelPlanForm onFormSubmit={handleFormSubmit} />}
       <TravelPlanList travelPlans={travelPlans} onPlanDelete={handlePlanDelete} />
-      <CalendarButton onClick={handleCalendarToggle}>
+      <ActionButton onClick={handleCalendarToggle}>
         {isCalendarOpen ? 'Close Calendar' : 'Open Calendar'}
-      </CalendarButton>
+      </ActionButton>
       {isCalendarOpen && <Calendar travelPlans={travelPlans} />}
     </Container>
   );
