@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
-import exampleTravelPlans from '../../data/exampleTravelPlans';
 
 const Wrapper = styled.div`
   margin-bottom: 20px;
@@ -75,9 +74,8 @@ const Budget = styled.p`
   }
 `;
 
-const TravelPlanList = () => {
+const TravelPlanList = ({ travelPlans }) => {
   const router = useRouter();
-  const [travelPlans, setTravelPlans] = useState(exampleTravelPlans);
 
   useEffect(() => {
     localStorage.setItem('travelPlans', JSON.stringify(travelPlans));

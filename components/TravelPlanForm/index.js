@@ -70,7 +70,7 @@ const TravelPlanForm = ({ onFormSubmit }) => {
       endDate,
       activity,
       tag,
-      budget,
+      budget: Number(budget),
       picture,
     };
 
