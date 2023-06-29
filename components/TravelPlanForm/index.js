@@ -70,8 +70,8 @@ const TravelPlanForm = ({ onFormSubmit }) => {
       endDate,
       activity,
       tag,
-      budget: Number(budget),
-      picture,
+      budget,
+      picture: picture ? URL.createObjectURL(picture) : '',
     };
 
     onFormSubmit(travelPlanData);

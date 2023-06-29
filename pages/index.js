@@ -40,6 +40,7 @@ const HomePage = () => {
     const newTravelPlan = {
       id: Date.now(),
       ...travelPlanData,
+      imageUrl: null, // Initially set image URL to null
     };
     setTravelPlans((prevTravelPlans) => [...prevTravelPlans, newTravelPlan]);
   };
@@ -53,13 +54,10 @@ const HomePage = () => {
     setIsCalendarOpen(!isCalendarOpen);
   };
 
-  const setPicture = (picture) => {
-  };
-
   return (
     <Container>
       <Title>Wayfarer Planner</Title>
-      <TravelPlanForm onFormSubmit={handleFormSubmit} setPicture={setPicture} />
+      <TravelPlanForm onFormSubmit={handleFormSubmit} />
       <TravelPlanList travelPlans={travelPlans} onPlanDelete={handlePlanDelete} />
       <CalendarButton onClick={handleCalendarToggle}>
         {isCalendarOpen ? 'Close Calendar' : 'Open Calendar'}

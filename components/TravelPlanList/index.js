@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
+import exampleTravelPlans from '../../data/exampleTravelPlans';
 
 const Wrapper = styled.div`
   margin-bottom: 20px;
@@ -25,7 +26,7 @@ const PlanItem = styled.div`
   margin-bottom: 10px;
   cursor: pointer;
   transition: background-color 0.3s;
-  background-image: ${(props) => `url(${props.image})`};
+  background-image: ${(props) => (props.image ? `url(${props.image})` : 'none')};
   background-size: cover;
   background-position: center;
 `;
@@ -74,6 +75,12 @@ const Budget = styled.p`
   }
 `;
 
+const DefaultBackground = styled.div`
+  background-image: url('/default_background.avif');
+  background-size: cover;
+  background-position: center;
+`;
+
 const TravelPlanList = ({ travelPlans }) => {
   const router = useRouter();
 
@@ -90,23 +97,48 @@ const TravelPlanList = ({ travelPlans }) => {
       <Title>Travel Plans</Title>
       {travelPlans.length > 0 ? (
         travelPlans.map((plan) => (
-          <PlanItem key={plan.id} onClick={() => handlePlanClick(plan.id)} image={plan.picture}>
-            <InfoWrapper>
-              <PlanName>{plan.planName}</PlanName>
-              <Duration>
-                {`${new Date(plan.startDate).toLocaleDateString('en-GB', {
-                  day: '2-digit',
-                  month: '2-digit',
-                  year: '2-digit',
-                })} - ${new Date(plan.endDate).toLocaleDateString('en-GB', {
-                  day: '2-digit',
-                  month: '2-digit',
-                  year: '2-digit',
-                })}`}
-              </Duration>
-              <Activity>{plan.activity}</Activity>
-              <Budget>{plan.budget}</Budget>
-            </InfoWrapper>
+          <PlanItem
+            key={plan.id}
+            onClick={() => handlePlanClick(plan.id)}
+            image={plan.picture ? plan.picture : null}
+          >
+            {plan.picture ? (
+              <InfoWrapper>
+                <PlanName>{plan.planName}</PlanName>
+                <Duration>
+                  {`${new Date(plan.startDate).toLocaleDateString('en-GB', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: '2-digit',
+                  })} - ${new Date(plan.endDate).toLocaleDateString('en-GB', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: '2-digit',
+                  })}`}
+                </Duration>
+                <Activity>{plan.activity}</Activity>
+                <Budget>{plan.budget}</Budget>
+              </InfoWrapper>
+            ) : (
+              <DefaultBackground>
+                <InfoWrapper>
+                  <PlanName>{plan.planName}</PlanName>
+                  <Duration>
+                    {`${new Date(plan.startDate).toLocaleDateString('en-GB', {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: '2-digit',
+                    })} - ${new Date(plan.endDate).toLocaleDateString('en-GB', {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: '2-digit',
+                    })}`}
+                  </Duration>
+                  <Activity>{plan.activity}</Activity>
+                  <Budget>{plan.budget}</Budget>
+                </InfoWrapper>
+              </DefaultBackground>
+            )}
             <Tag>{plan.tag}</Tag>
           </PlanItem>
         ))
