@@ -31,7 +31,7 @@ const Navigation = () => {
   return (
     <NavigationContainer>
       <NavButton onClick={() => router.push('/')}>Home</NavButton>
-      <NavButton disabled>Coming Soon</NavButton>
+      <NavButton onClick={() => router.push('/calendar')}>Calendar</NavButton>
     </NavigationContainer>
   );
 };

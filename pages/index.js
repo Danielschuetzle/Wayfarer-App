@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import TravelPlanForm from '../components/TravelPlanForm';
 import TravelPlanList from '../components/TravelPlanList';
 import Calendar from '../components/Calendar';
+import Navigation from '../components/Navigation';
 import exampleTravelPlans from '../data/exampleTravelPlans';
 
 const Container = styled.div`
@@ -71,6 +72,7 @@ const HomePage = () => {
         {isCalendarOpen ? 'Close Calendar' : 'Open Calendar'}
       </ActionButton>
       {isCalendarOpen && <Calendar travelPlans={travelPlans} />}
+      <Navigation />
     </Container>
   );
 };
