@@ -26,10 +26,9 @@ const PlanItem = styled.div`
   margin-bottom: 10px;
   cursor: pointer;
   transition: background-color 0.3s;
-
-  &:hover {
-    background-color: #f5f8fb;
-  }
+  background-image: ${(props) => `url(${props.image})`};
+  background-size: cover;
+  background-position: center;
 `;
 
 const Tag = styled.p`
@@ -50,23 +49,26 @@ const InfoWrapper = styled.div`
 `;
 
 const PlanName = styled.h3`
-  color: #3f72af;
+  color: #fff;
+  font-size: 16px;
   margin-bottom: 5px;
 `;
 
 const Duration = styled.p`
-  color: #5188c6;
-  font-weight: bolder;
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
 `;
 
 const Activity = styled.p`
-  color: navy;
+  color: #fff;
   font-size: 14px;
   margin-top: 10px;
 `;
 
-const TravelPlanList = ({ travelPlans }) => {
+const TravelPlanList = () => {
   const router = useRouter();
+  const [travelPlans, setTravelPlans] = useState(exampleTravelPlans);
 
   useEffect(() => {
     localStorage.setItem('travelPlans', JSON.stringify(travelPlans));
@@ -81,7 +83,7 @@ const TravelPlanList = ({ travelPlans }) => {
       <Title>Travel Plans</Title>
       {travelPlans.length > 0 ? (
         travelPlans.map((plan) => (
-          <PlanItem key={plan.id} onClick={() => handlePlanClick(plan.id)}>
+          <PlanItem key={plan.id} onClick={() => handlePlanClick(plan.id)} image={plan.picture}>
             <InfoWrapper>
               <PlanName>{plan.planName}</PlanName>
               <Duration>

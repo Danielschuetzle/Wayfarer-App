@@ -40,7 +40,7 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const TravelPlanForm = ({ onFormSubmit }) => {
+const TravelPlanForm = ({ onFormSubmit, setPicture }) => {
   const [planName, setPlanName] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -49,25 +49,37 @@ const TravelPlanForm = ({ onFormSubmit }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
     const travelPlanData = {
       planName,
       startDate,
       endDate,
       activity,
       tag,
+      picture: null, // Default value for the picture
     };
+
     onFormSubmit(travelPlanData);
     setPlanName('');
     setStartDate('');
     setEndDate('');
     setActivity('');
     setTag('');
+    setPicture(null); // Reset the picture state
   };
 
   return (
     <Form onSubmit={handleSubmit}>
-      <Label>Plan Name:</Label>
-      <Input type="text" value={planName} onChange={(e) => setPlanName(e.target.value)} />
+      <FlexContainer>
+        <FieldContainer>
+          <Label>Plan Name:</Label>
+          <Input type="text" value={planName} onChange={(e) => setPlanName(e.target.value)} />
+        </FieldContainer>
+        <FieldContainer>
+          <Label>Picture:</Label>
+          <Input type="file" accept="image/*" onChange={(e) => setPicture(e.target.files[0])} />
+        </FieldContainer>
+      </FlexContainer>
       <FlexContainer>
         <FieldContainer>
           <Label>Start Date:</Label>

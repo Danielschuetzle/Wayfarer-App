@@ -39,6 +39,20 @@ const SubmitButton = styled.button`
   cursor: pointer;
 `;
 
+const UploadButton = styled.label`
+  background-color: #3f72af;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  text-align: center;
+`;
+
+const FileInput = styled.input`
+  display: none;
+`;
+
 const TravelPlanEdit = () => {
   const router = useRouter();
   const { id } = router.query;
@@ -47,7 +61,8 @@ const TravelPlanEdit = () => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [activity, setActivity] = useState('');
-  const [tag, setTag] = useState(''); // New state for tag
+  const [tag, setTag] = useState('');
+  const [picture, setPicture] = useState(null);
 
   useEffect(() => {
     const fetchTravelPlan = () => {
@@ -59,7 +74,7 @@ const TravelPlanEdit = () => {
         setStartDate(selectedTravelPlan.startDate);
         setEndDate(selectedTravelPlan.endDate);
         setActivity(selectedTravelPlan.activity);
-        setTag(selectedTravelPlan.tag); // Set the tag value from stored plans
+        setTag(selectedTravelPlan.tag);
       }
     };
 
@@ -76,7 +91,8 @@ const TravelPlanEdit = () => {
       startDate,
       endDate,
       activity,
-      tag, // Add the tag value to updated plan
+      tag,
+      picture,
     };
     const storedPlans = localStorage.getItem('travelPlans');
     if (storedPlans) {
@@ -85,7 +101,18 @@ const TravelPlanEdit = () => {
         plan.id === parseInt(id) ? updatedTravelPlan : plan
       );
       localStorage.setItem('travelPlans', JSON.stringify(updatedTravelPlans));
-      router.push(`/travelplans/${id}`); // Redirect to the details page after editing
+      router.push(`/travelplans/${id}`);
+    }
+  };
+
+  const handlePictureUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setPicture(reader.result);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -116,6 +143,10 @@ const TravelPlanEdit = () => {
           placeholder="Tag"
           required
         />
+        <UploadButton>
+          Upload Picture
+          <FileInput type="file" accept="image/*" onChange={handlePictureUpload} />
+        </UploadButton>
         <SubmitButton type="submit">Submit changes</SubmitButton>
       </Form>
     </Container>
