@@ -8,24 +8,33 @@ const CalendarContainer = styled.div`
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  @media (max-width: 600px) {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 4px;
+  }
 `;
 
 const CalendarHeader = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  flex-direction: column;
   margin-bottom: 10px;
+  @media (max-width: 600px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
 `;
 
 const CalendarTitle = styled.h2`
   font-size: 20px;
   color: #3f72af;
+  margin: 0;
 `;
 
 const CalendarControls = styled.div`
   display: flex;
-  justify-content: flex-end;
   align-items: center;
 `;
 
@@ -43,6 +52,9 @@ const CalendarGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 5px;
+  @media (max-width: 600px) {
+    grid-template-columns: repeat(5, 1fr);
+  }
 `;
 
 const CalendarCell = styled.div`
@@ -57,6 +69,7 @@ const CalendarCell = styled.div`
   height: 100px;
   color: ${(props) => (props.isCurrentDate || props.isTravelDate ? '#fff' : 'inherit')};
   cursor: ${(props) => (props.isTravelDate ? 'pointer' : 'default')};
+  visibility: ${(props) => (props.isEmpty ? 'hidden' : 'visible')};
 `;
 
 const CalendarDay = styled.p`
@@ -73,16 +86,14 @@ const CalendarDestinationItem = styled.li``;
 
 const Calendar = ({ travelPlans }) => {
   const [date, setDate] = useState(new Date());
-  const [isClient, setIsClient] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    setIsClient(true);
+    // Ensuring component will be rendered on client side
+    if (typeof window !== 'undefined') {
+      return;
+    }
   }, []);
-
-  if (!isClient) {
-    return null;
-  }
 
   const currentMonth = date.toLocaleString('default', { month: 'long' });
   const currentYear = date.getFullYear();
@@ -118,7 +129,7 @@ const Calendar = ({ travelPlans }) => {
     const cells = [];
 
     for (let i = 0; i < firstDayOfMonth; i++) {
-      cells.push(<CalendarCell key={`empty-${i}`} />);
+      cells.push(<CalendarCell key={`empty-${i}`} isEmpty />);
     }
 
     for (let day = 1; day <= daysInMonth; day++) {
@@ -174,11 +185,9 @@ const Calendar = ({ travelPlans }) => {
   return (
     <CalendarContainer>
       <CalendarHeader>
+        <CalendarButton onClick={handlePrevMonth}>Prev</CalendarButton>
         <CalendarTitle>{currentMonth} {currentYear}</CalendarTitle>
-        <CalendarControls>
-          <CalendarButton onClick={handlePrevMonth}>Prev</CalendarButton>
-          <CalendarButton onClick={handleNextMonth}>Next</CalendarButton>
-        </CalendarControls>
+        <CalendarButton onClick={handleNextMonth}>Next</CalendarButton>
       </CalendarHeader>
       <CalendarGrid>{renderCalendarCells()}</CalendarGrid>
     </CalendarContainer>
