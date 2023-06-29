@@ -66,6 +66,15 @@ const Activity = styled.p`
   margin-top: 10px;
 `;
 
+const Budget = styled.p`
+  color: #fff;
+  font-size: 14px;
+  margin-top: 10px;
+  ::after {
+    content: '€';
+  }
+`;
+
 const TravelPlanList = () => {
   const router = useRouter();
   const [travelPlans, setTravelPlans] = useState(exampleTravelPlans);
@@ -98,6 +107,7 @@ const TravelPlanList = () => {
                 })}`}
               </Duration>
               <Activity>{plan.activity}</Activity>
+              <Budget>{plan.budget}</Budget>
             </InfoWrapper>
             <Tag>{plan.tag}</Tag>
           </PlanItem>

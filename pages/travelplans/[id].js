@@ -27,6 +27,11 @@ const Tag = styled.p`
   font-size: 18px;
 `;
 
+const Budget = styled.p`
+  color: navy;
+  font-size: 18px;
+`;
+
 const ButtonContainer = styled.div`
   display: flex;
   gap: 10px;
@@ -154,6 +159,7 @@ const TravelPlanDetail = () => {
       <DetailItem>End Date: {travelPlan.endDate}</DetailItem>
       <DetailItem>Activities: {travelPlan.activity}</DetailItem>
       <Tag>Tag: {travelPlan.tag}</Tag>
+      <Budget>Budget: {travelPlan.budget} €</Budget>
       <ButtonContainer>
         <ReturnButton onClick={handleReturn}>Return</ReturnButton>
         <EditButton onClick={handleEdit}>Edit</EditButton>

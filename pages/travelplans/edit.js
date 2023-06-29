@@ -62,6 +62,7 @@ const TravelPlanEdit = () => {
   const [endDate, setEndDate] = useState('');
   const [activity, setActivity] = useState('');
   const [tag, setTag] = useState('');
+  const [budget, setBudget] = useState(0);
   const [picture, setPicture] = useState(null);
 
   useEffect(() => {
@@ -75,6 +76,7 @@ const TravelPlanEdit = () => {
         setEndDate(selectedTravelPlan.endDate);
         setActivity(selectedTravelPlan.activity);
         setTag(selectedTravelPlan.tag);
+        setBudget(selectedTravelPlan.budget);
       }
     };
 
@@ -92,6 +94,7 @@ const TravelPlanEdit = () => {
       endDate,
       activity,
       tag,
+      budget,
       picture,
     };
     const storedPlans = localStorage.getItem('travelPlans');
@@ -141,6 +144,13 @@ const TravelPlanEdit = () => {
           value={tag}
           onChange={(e) => setTag(e.target.value)}
           placeholder="Tag"
+          required
+        />
+        <Input
+          type="number"
+          value={budget}
+          onChange={(e) => setBudget(e.target.value)}
+          placeholder="Budget (€)"
           required
         />
         <UploadButton>
