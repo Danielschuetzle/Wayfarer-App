@@ -22,7 +22,7 @@ const NavLink = styled.a`
 
   &:hover {
     opacity: 0.8;
-    text-decoration: underline;
+    text-decoration: none;
   }
 `;
 
