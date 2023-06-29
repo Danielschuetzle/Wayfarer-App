@@ -31,6 +31,18 @@ const Input = styled.input`
   width: 100%;
 `;
 
+const BudgetContainer = styled.div`
+  position: relative;
+`;
+
+const CurrencySymbol = styled.span`
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  color: #777;
+`;
+
 const Button = styled.button`
   padding: 10px 20px;
   background-color: #3f72af;
@@ -40,12 +52,14 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const TravelPlanForm = ({ onFormSubmit, setPicture }) => {
+const TravelPlanForm = ({ onFormSubmit }) => {
   const [planName, setPlanName] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [activity, setActivity] = useState('');
   const [tag, setTag] = useState('');
+  const [budget, setBudget] = useState('');
+  const [picture, setPicture] = useState(null);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -56,7 +70,8 @@ const TravelPlanForm = ({ onFormSubmit, setPicture }) => {
       endDate,
       activity,
       tag,
-      picture: null, // Default value for the picture
+      budget,
+      picture: picture ? URL.createObjectURL(picture) : '',
     };
 
     onFormSubmit(travelPlanData);
@@ -65,7 +80,13 @@ const TravelPlanForm = ({ onFormSubmit, setPicture }) => {
     setEndDate('');
     setActivity('');
     setTag('');
-    setPicture(null); // Reset the picture state
+    setBudget('');
+    setPicture(null);
+  };
+
+  const handlePictureChange = (event) => {
+    const file = event.target.files[0];
+    setPicture(file);
   };
 
   return (
@@ -73,31 +94,68 @@ const TravelPlanForm = ({ onFormSubmit, setPicture }) => {
       <FlexContainer>
         <FieldContainer>
           <Label>Plan Name:</Label>
-          <Input type="text" value={planName} onChange={(e) => setPlanName(e.target.value)} />
+          <Input
+            type="text"
+            value={planName}
+            onChange={(e) => setPlanName(e.target.value)}
+          />
         </FieldContainer>
         <FieldContainer>
-          <Label>Picture:</Label>
-          <Input type="file" accept="image/*" onChange={(e) => setPicture(e.target.files[0])} />
+          <Label>Budget:</Label>
+          <BudgetContainer>
+            <CurrencySymbol>€</CurrencySymbol>
+            <Input
+              type="text"
+              value={budget}
+              onChange={(e) => setBudget(e.target.value)}
+            />
+          </BudgetContainer>
         </FieldContainer>
       </FlexContainer>
       <FlexContainer>
         <FieldContainer>
           <Label>Start Date:</Label>
-          <Input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+          <Input
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+          />
         </FieldContainer>
         <FieldContainer>
           <Label>End Date:</Label>
-          <Input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+          <Input
+            type="date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+          />
         </FieldContainer>
       </FlexContainer>
       <FlexContainer>
         <FieldContainer>
           <Label>Activity:</Label>
-          <Input type="text" value={activity} onChange={(e) => setActivity(e.target.value)} />
+          <Input
+            type="text"
+            value={activity}
+            onChange={(e) => setActivity(e.target.value)}
+          />
         </FieldContainer>
         <FieldContainer>
           <Label>Tag:</Label>
-          <Input type="text" value={tag} onChange={(e) => setTag(e.target.value)} />
+          <Input
+            type="text"
+            value={tag}
+            onChange={(e) => setTag(e.target.value)}
+          />
+        </FieldContainer>
+      </FlexContainer>
+      <FlexContainer>
+        <FieldContainer>
+          <Label>Plan Picture:</Label>
+          <Input
+            type="file"
+            accept="image/*"
+            onChange={handlePictureChange}
+          />
         </FieldContainer>
       </FlexContainer>
       <Button type="submit">Add Travel Plan</Button>

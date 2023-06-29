@@ -26,7 +26,7 @@ const PlanItem = styled.div`
   margin-bottom: 10px;
   cursor: pointer;
   transition: background-color 0.3s;
-  background-image: ${(props) => `url(${props.image})`};
+  background-image: ${(props) => (props.image ? `url(${props.image})` : `url("/default_background.avif")`)};
   background-size: cover;
   background-position: center;
 `;
@@ -66,9 +66,17 @@ const Activity = styled.p`
   margin-top: 10px;
 `;
 
-const TravelPlanList = () => {
+const Budget = styled.p`
+  color: #fff;
+  font-size: 14px;
+  margin-top: 10px;
+  ::after {
+    content: '€';
+  }
+`;
+
+const TravelPlanList = ({ travelPlans }) => {
   const router = useRouter();
-  const [travelPlans, setTravelPlans] = useState(exampleTravelPlans);
 
   useEffect(() => {
     localStorage.setItem('travelPlans', JSON.stringify(travelPlans));
@@ -83,7 +91,11 @@ const TravelPlanList = () => {
       <Title>Travel Plans</Title>
       {travelPlans.length > 0 ? (
         travelPlans.map((plan) => (
-          <PlanItem key={plan.id} onClick={() => handlePlanClick(plan.id)} image={plan.picture}>
+          <PlanItem
+            key={plan.id}
+            onClick={() => handlePlanClick(plan.id)}
+            image={plan.picture ? plan.picture : null}
+          >
             <InfoWrapper>
               <PlanName>{plan.planName}</PlanName>
               <Duration>
@@ -98,6 +110,7 @@ const TravelPlanList = () => {
                 })}`}
               </Duration>
               <Activity>{plan.activity}</Activity>
+              <Budget>{plan.budget}</Budget>
             </InfoWrapper>
             <Tag>{plan.tag}</Tag>
           </PlanItem>
