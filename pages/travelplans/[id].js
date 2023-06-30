@@ -102,33 +102,45 @@ const ButtonContainer = styled.div`
   margin-top: 20px;
 `;
 
+const CheckboxInput = styled.input`
+  position: relative;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-right: 8px;
+  outline: none;
+  cursor: pointer;
+  margin-top: 2px;
+
+  &:checked {
+    background-color: #3f72af;
+    border-color: #3f72af;
+  }
+
+  &:checked::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    background-color: #fff;
+    border-radius: 2px;
+  }
+`;
+
 const CheckboxLabel = styled.label`
   display: flex;
   align-items: center;
   cursor: pointer;
   margin-right: 20px;
 
-  input[type='checkbox'] {
-    appearance: none;
-    position: relative;
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-right: 8px;
-    outline: none;
-    cursor: pointer;
-
-    &:checked {
-      background-color: #3f72af;
-      border-color: #3f72af;
-    }
+  span {
+    font-size: 14px;
   }
-`;
-
-const CheckboxInput = styled.input`
-  display: none;
 `;
 
 const AddActivityContainer = styled.div`
@@ -167,6 +179,15 @@ const TravelPlanDetail = () => {
   const [editedBudget, setEditedBudget] = useState('');
   const [editedPicture, setEditedPicture] = useState(null);
   const [newActivity, setNewActivity] = useState('');
+  const [checkedActivities, setCheckedActivities] = useState([]);
+
+  const handleCheckboxChange = (activity) => {
+    if (checkedActivities.includes(activity)) {
+      setCheckedActivities(checkedActivities.filter((item) => item !== activity));
+    } else {
+      setCheckedActivities([...checkedActivities, activity]);
+    }
+  };
 
   useEffect(() => {
     const fetchTravelPlan = () => {
@@ -310,33 +331,6 @@ const TravelPlanDetail = () => {
         </RowContainer>
         <RowContainer>
           <RowItem>
-            {editedActivities.map((activity, index) => (
-              <CheckboxLabel key={index}>
-                <CheckboxInput
-                  type="checkbox"
-                  checked={true}
-                  disabled={!editing}
-                />
-                {activity}
-              </CheckboxLabel>
-            ))}
-          </RowItem>
-        </RowContainer>
-        {editing && (
-          <AddActivityContainer>
-            <Input
-              type="text"
-              placeholder="Add Activity"
-              value={newActivity}
-              onChange={(e) => setNewActivity(e.target.value)}
-            />
-            <AddActivityButton type="button" onClick={handleAddActivity}>
-              Add
-            </AddActivityButton>
-          </AddActivityContainer>
-        )}
-        <RowContainer>
-          <RowItem>
             <Input
               type="number"
               value={editedBudget}
@@ -352,6 +346,34 @@ const TravelPlanDetail = () => {
             Upload Picture
             <FileInput type="file" accept="image/*" onChange={handlePictureUpload} />
           </UploadButton>
+        )}
+        <RowContainer>
+          <RowItem>
+            {editedActivities.map((activity, index) => (
+              <CheckboxLabel key={index}>
+                <CheckboxInput
+                  type="checkbox"
+                  checked={checkedActivities.includes(activity)}
+                  onChange={() => handleCheckboxChange(activity)}
+                  disabled={!editing}
+                />
+                <span>{activity}</span>
+              </CheckboxLabel>
+            ))}
+          </RowItem>
+        </RowContainer>
+        {editing && (
+          <AddActivityContainer>
+            <AddActivityInput
+              type="text"
+              placeholder="Add Activity"
+              value={newActivity}
+              onChange={(e) => setNewActivity(e.target.value)}
+            />
+            <AddActivityButton type="button" onClick={handleAddActivity}>
+              Add
+            </AddActivityButton>
+          </AddActivityContainer>
         )}
         <ButtonContainer>
           {!editing && (
