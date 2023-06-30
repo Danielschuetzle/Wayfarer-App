@@ -15,27 +15,74 @@ const PlanName = styled.h1`
   color: #3f72af;
   font-size: 24px;
   margin-bottom: 20px;
+  text-align: center;
 `;
 
 const DetailItem = styled.p`
   color: navy;
   font-size: 18px;
+  margin-bottom: 10px;
+  text-align: center;
+`;
+
+const DurationWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+`;
+
+const DurationLabel = styled.span`
+  color: navy;
+  font-size: 18px;
+  margin-right: 5px;
+`;
+
+const Duration = styled.p`
+  color: navy;
+  font-size: 18px;
+  margin-bottom: 10px;
 `;
 
 const Tag = styled.p`
   color: navy;
   font-size: 18px;
+  text-align: center;
 `;
 
 const Budget = styled.p`
   color: navy;
   font-size: 18px;
+  text-align: center;
+`;
+
+const Checklist = styled.ul`
+  list-style-type: none;
+  padding-left: 0;
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+`;
+
+const ChecklistItem = styled.li`
+  display: flex;
+  align-items: center;
+  color: navy;
+  font-size: 18px;
+  margin-right: 20px;
+  margin-bottom: 10px;
+`;
+
+const Checkbox = styled.input`
+  margin-right: 10px;
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   gap: 10px;
   margin-top: 20px;
+  justify-content: center;
 `;
 
 const ReturnButton = styled.button`
@@ -99,6 +146,7 @@ const TravelPlanDetail = () => {
   const { id } = router.query;
 
   const [travelPlan, setTravelPlan] = useState(null);
+  const [checkedActivities, setCheckedActivities] = useState([]);
 
   useEffect(() => {
     const fetchTravelPlan = () => {
@@ -107,6 +155,7 @@ const TravelPlanDetail = () => {
         const travelPlans = JSON.parse(storedPlans);
         const selectedTravelPlan = travelPlans.find((plan) => plan.id === parseInt(id));
         setTravelPlan(selectedTravelPlan);
+        setCheckedActivities(selectedTravelPlan.activities || []);
       }
     };
 
@@ -148,6 +197,15 @@ const TravelPlanDetail = () => {
     }
   };
 
+  const handleActivityCheckboxChange = (event, activity) => {
+    const isChecked = event.target.checked;
+    if (isChecked) {
+      setCheckedActivities([...checkedActivities, activity]);
+    } else {
+      setCheckedActivities(checkedActivities.filter((item) => item !== activity));
+    }
+  };
+
   if (!travelPlan) {
     return <p>Loading...</p>;
   }
@@ -155,9 +213,25 @@ const TravelPlanDetail = () => {
   return (
     <Container>
       <PlanName>{travelPlan.planName}</PlanName>
-      <DetailItem>Start Date: {travelPlan.startDate}</DetailItem>
-      <DetailItem>End Date: {travelPlan.endDate}</DetailItem>
-      <DetailItem>Activities: {travelPlan.activity}</DetailItem>
+      <DurationWrapper>
+        <DurationLabel>Duration:</DurationLabel>
+        <Duration>
+          {travelPlan.startDate} - {travelPlan.endDate}
+        </Duration>
+      </DurationWrapper>
+      <DetailItem>Activities:</DetailItem>
+      <Checklist>
+        {travelPlan.activities.map((activity, index) => (
+          <ChecklistItem key={index}>
+            <Checkbox
+              type="checkbox"
+              checked={checkedActivities.includes(activity)}
+              onChange={(event) => handleActivityCheckboxChange(event, activity)}
+            />
+            {activity}
+          </ChecklistItem>
+        ))}
+      </Checklist>
       <Tag>Tag: {travelPlan.tag}</Tag>
       <Budget>Budget: {travelPlan.budget} €</Budget>
       <ButtonContainer>
