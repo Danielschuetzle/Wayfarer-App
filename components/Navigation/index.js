@@ -5,23 +5,24 @@ import styled from 'styled-components';
 const NavigationContainer = styled.div`
   position: fixed;
   bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80%;
-  max-width: 400px;
+  left: 0;
+  width: 100%;
+  background-color: #3f72af;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
-const NavButton = styled.button`
-  flex: 1;
+const NavLink = styled.a`
   color: #fff;
-  background-color: #3f72af;
-  border: none;
-  padding: 10px;
   font-size: 18px;
-  cursor: pointer;
+  text-decoration: none;
+  margin: 0 10px;
+  transition: opacity 0.3s ease;
 
   &:hover {
-    background-color: #2d5d84;
+    opacity: 0.8;
+    text-decoration: none;
   }
 `;
 
@@ -30,8 +31,8 @@ const Navigation = () => {
 
   return (
     <NavigationContainer>
-      <NavButton onClick={() => router.push('/')}>Home</NavButton>
-      <NavButton disabled>Coming Soon</NavButton>
+      <NavLink onClick={() => router.push('/')}>Home</NavLink>
+      <NavLink onClick={() => router.push('/calendar')}>Calendar</NavLink>
     </NavigationContainer>
   );
 };

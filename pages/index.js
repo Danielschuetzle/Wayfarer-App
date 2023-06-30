@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import TravelPlanForm from '../components/TravelPlanForm';
 import TravelPlanList from '../components/TravelPlanList';
-import Calendar from '../components/Calendar';
+import Navigation from '../components/Navigation';
 import exampleTravelPlans from '../data/exampleTravelPlans';
 
 const Container = styled.div`
@@ -34,7 +34,6 @@ const ActionButton = styled.button`
 
 const HomePage = () => {
   const [travelPlans, setTravelPlans] = useState(exampleTravelPlans);
-  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
 
   const handleFormSubmit = (travelPlanData) => {
@@ -51,10 +50,6 @@ const HomePage = () => {
     setTravelPlans(updatedTravelPlans);
   };
 
-  const handleCalendarToggle = () => {
-    setIsCalendarOpen(!isCalendarOpen);
-  };
-
   const handleFormToggle = () => {
     setIsFormOpen(!isFormOpen);
   };
@@ -67,10 +62,7 @@ const HomePage = () => {
       </ActionButton>
       {isFormOpen && <TravelPlanForm onFormSubmit={handleFormSubmit} />}
       <TravelPlanList travelPlans={travelPlans} onPlanDelete={handlePlanDelete} />
-      <ActionButton onClick={handleCalendarToggle}>
-        {isCalendarOpen ? 'Close Calendar' : 'Open Calendar'}
-      </ActionButton>
-      {isCalendarOpen && <Calendar travelPlans={travelPlans} />}
+      <Navigation />
     </Container>
   );
 };
