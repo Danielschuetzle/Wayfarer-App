@@ -35,7 +35,6 @@ const Input = styled.input`
 
 const RowContainer = styled.div`
   display: flex;
-  gap: 20px;
   align-items: center;
   width: 100%;
 `;
@@ -103,6 +102,44 @@ const ButtonContainer = styled.div`
   margin-top: 20px;
 `;
 
+const CheckboxLabel = styled.label`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-right: 20px;
+
+  input[type='checkbox'] {
+    appearance: none;
+    position: relative;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-right: 8px;
+    outline: none;
+    cursor: pointer;
+
+    &:checked {
+      background-color: #3f72af;
+      border-color: #3f72af;
+
+      &:before {
+        content: '\u2713';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #fff;
+      }
+    }
+  }
+`;
+
+const CheckboxInput = styled.input`
+  display: none;
+`;
+
 const TravelPlanDetail = () => {
   const router = useRouter();
   const { id } = router.query;
@@ -112,7 +149,7 @@ const TravelPlanDetail = () => {
   const [editedPlanName, setEditedPlanName] = useState('');
   const [editedStartDate, setEditedStartDate] = useState('');
   const [editedEndDate, setEditedEndDate] = useState('');
-  const [editedActivity, setEditedActivity] = useState('');
+  const [editedActivities, setEditedActivities] = useState([]);
   const [editedTag, setEditedTag] = useState('');
   const [editedBudget, setEditedBudget] = useState('');
   const [editedPicture, setEditedPicture] = useState(null);
@@ -127,7 +164,7 @@ const TravelPlanDetail = () => {
         setEditedPlanName(selectedTravelPlan.planName);
         setEditedStartDate(selectedTravelPlan.startDate);
         setEditedEndDate(selectedTravelPlan.endDate);
-        setEditedActivity(selectedTravelPlan.activity);
+        setEditedActivities([...selectedTravelPlan.activities]);
         setEditedTag(selectedTravelPlan.tag);
         setEditedBudget(selectedTravelPlan.budget);
       }
@@ -145,7 +182,7 @@ const TravelPlanDetail = () => {
     setEditedPlanName(travelPlan.planName);
     setEditedStartDate(travelPlan.startDate);
     setEditedEndDate(travelPlan.endDate);
-    setEditedActivity(travelPlan.activity);
+    setEditedActivities([...travelPlan.activities]);
     setEditedTag(travelPlan.tag);
     setEditedBudget(travelPlan.budget);
   };
@@ -158,7 +195,7 @@ const TravelPlanDetail = () => {
       planName: editedPlanName,
       startDate: editedStartDate,
       endDate: editedEndDate,
-      activity: editedActivity,
+      activities: editedActivities,
       tag: editedTag,
       budget: editedBudget,
       picture: editedPicture,
@@ -252,21 +289,37 @@ const TravelPlanDetail = () => {
         </RowContainer>
         <RowContainer>
           <RowItem>
+            {travelPlan.activities.map((activity, index) => (
+              <CheckboxLabel key={index}>
+                <CheckboxInput
+                  type="checkbox"
+                  checked={editedActivities.includes(activity)}
+                  onChange={(e) => {
+                    const updatedActivities = [...editedActivities];
+                    if (e.target.checked) {
+                      updatedActivities.push(activity);
+                    } else {
+                      const activityIndex = updatedActivities.indexOf(activity);
+                      if (activityIndex !== -1) {
+                        updatedActivities.splice(activityIndex, 1);
+                      }
+                    }
+                    setEditedActivities(updatedActivities);
+                  }}
+                  disabled={!editing}
+                />
+                {activity}
+              </CheckboxLabel>
+            ))}
+          </RowItem>
+        </RowContainer>
+        <RowContainer>
+          <RowItem>
             <Input
               type="number"
               value={editedBudget}
               onChange={(e) => setEditedBudget(e.target.value)}
               placeholder="Budget (€)"
-              required
-              disabled={!editing}
-            />
-          </RowItem>
-          <RowItem>
-            <Input
-              type="text"
-              value={editedActivity}
-              onChange={(e) => setEditedActivity(e.target.value)}
-              placeholder="Activity"
               required
               disabled={!editing}
             />
