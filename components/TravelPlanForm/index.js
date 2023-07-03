@@ -185,7 +185,7 @@ const TravelPlanForm = ({ onFormSubmit }) => {
         </ActivityButton>
       </FlexContainer>
       {activities.slice(1).map((activity, index) => (
-        <FlexContainer key={index}>
+        <FlexContainer key={`${activity}-${index}`}>
           <FieldContainer>
             <Label>Activity {index + 2}:</Label>
             <Input
