@@ -11,43 +11,39 @@ const Container = styled.div`
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
 
-const PlanName = styled.h1`
+const Title = styled.h1`
   color: #3f72af;
   font-size: 24px;
   margin-bottom: 20px;
+  text-align: center;
 `;
 
-const DetailItem = styled.p`
-  color: navy;
-  font-size: 18px;
-`;
-
-const Tag = styled.p`
-  color: navy;
-  font-size: 18px;
-`;
-
-const Budget = styled.p`
-  color: navy;
-  font-size: 18px;
-`;
-
-const ButtonContainer = styled.div`
+const Form = styled.form`
   display: flex;
-  gap: 10px;
-  margin-top: 20px;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
 `;
 
-const ReturnButton = styled.button`
-  background-color: #888;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
+const Input = styled.input`
   padding: 8px 12px;
-  cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  width: 100%;
 `;
 
-const EditButton = styled.button`
+const RowContainer = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+`;
+
+const RowItem = styled.div`
+  flex: 1;
+`;
+
+const SubmitButton = styled.button`
   background-color: #3f72af;
   color: #fff;
   border: none;
@@ -65,9 +61,13 @@ const DeleteButton = styled.button`
   cursor: pointer;
 `;
 
-const UploadButtonContainer = styled.div`
-  margin-top: 20px;
-  text-align: center;
+const ReturnButton = styled.button`
+  background-color: #888;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
 `;
 
 const UploadButton = styled.label`
@@ -77,6 +77,7 @@ const UploadButton = styled.label`
   border-radius: 4px;
   padding: 8px 12px;
   cursor: pointer;
+  text-align: center;
 `;
 
 const FileInput = styled.input`
@@ -94,11 +95,99 @@ const Image = styled.img`
   margin-bottom: 10px;
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+`;
+
+const CheckboxInput = styled.input`
+  position: relative;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-right: 8px;
+  outline: none;
+  cursor: pointer;
+  margin-top: 2px;
+
+  &:checked {
+    background-color: #3f72af;
+    border-color: #3f72af;
+  }
+
+  &:checked::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    background-color: #fff;
+    border-radius: 2px;
+  }
+`;
+
+const CheckboxLabel = styled.label`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-right: 20px;
+
+  span {
+    font-size: 14px;
+  }
+`;
+
+const AddActivityContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
+const AddActivityInput = styled.input`
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+`;
+
+const AddActivityButton = styled.button`
+  background-color: #3f72af;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+`;
+
 const TravelPlanDetail = () => {
   const router = useRouter();
   const { id } = router.query;
 
   const [travelPlan, setTravelPlan] = useState(null);
+  const [editing, setEditing] = useState(false);
+  const [editedPlanName, setEditedPlanName] = useState('');
+  const [editedStartDate, setEditedStartDate] = useState('');
+  const [editedEndDate, setEditedEndDate] = useState('');
+  const [editedActivities, setEditedActivities] = useState([]);
+  const [editedTag, setEditedTag] = useState('');
+  const [editedBudget, setEditedBudget] = useState('');
+  const [editedPicture, setEditedPicture] = useState(null);
+  const [newActivity, setNewActivity] = useState('');
+  const [checkedActivities, setCheckedActivities] = useState([]);
+
+  const handleCheckboxChange = (activity) => {
+    if (checkedActivities.includes(activity)) {
+      setCheckedActivities(checkedActivities.filter((item) => item !== activity));
+    } else {
+      setCheckedActivities([...checkedActivities, activity]);
+    }
+  };
 
   useEffect(() => {
     const fetchTravelPlan = () => {
@@ -107,18 +196,56 @@ const TravelPlanDetail = () => {
         const travelPlans = JSON.parse(storedPlans);
         const selectedTravelPlan = travelPlans.find((plan) => plan.id === parseInt(id));
         setTravelPlan(selectedTravelPlan);
+        setEditedPlanName(selectedTravelPlan.planName);
+        setEditedStartDate(selectedTravelPlan.startDate);
+        setEditedEndDate(selectedTravelPlan.endDate);
+        setEditedActivities([...selectedTravelPlan.activities]);
+        setEditedTag(selectedTravelPlan.tag);
+        setEditedBudget(selectedTravelPlan.budget);
       }
     };
 
     fetchTravelPlan();
   }, [id]);
 
-  const handleReturn = () => {
-    router.push('/');
+  const handleEdit = () => {
+    setEditing(true);
   };
 
-  const handleEdit = () => {
-    router.push(`/travelplans/edit?id=${id}`);
+  const handleCancel = () => {
+    setEditing(false);
+    setEditedPlanName(travelPlan.planName);
+    setEditedStartDate(travelPlan.startDate);
+    setEditedEndDate(travelPlan.endDate);
+    setEditedActivities([...travelPlan.activities]);
+    setEditedTag(travelPlan.tag);
+    setEditedBudget(travelPlan.budget);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const updatedTravelPlan = {
+      ...travelPlan,
+      planName: editedPlanName,
+      startDate: editedStartDate,
+      endDate: editedEndDate,
+      activities: editedActivities,
+      tag: editedTag,
+      budget: editedBudget,
+      picture: editedPicture,
+    };
+
+    const storedPlans = localStorage.getItem('travelPlans');
+    if (storedPlans) {
+      const travelPlans = JSON.parse(storedPlans);
+      const updatedTravelPlans = travelPlans.map((plan) =>
+        plan.id === parseInt(id) ? updatedTravelPlan : plan
+      );
+      localStorage.setItem('travelPlans', JSON.stringify(updatedTravelPlans));
+      setTravelPlan(updatedTravelPlan);
+      setEditing(false);
+    }
   };
 
   const handleDelete = () => {
@@ -139,12 +266,16 @@ const TravelPlanDetail = () => {
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        setTravelPlan((prevTravelPlan) => ({
-          ...prevTravelPlan,
-          picture: reader.result,
-        }));
+        setEditedPicture(reader.result);
       };
       reader.readAsDataURL(file);
+    }
+  };
+
+  const handleAddActivity = () => {
+    if (newActivity) {
+      setEditedActivities([...editedActivities, newActivity]);
+      setNewActivity('');
     }
   };
 
@@ -154,28 +285,115 @@ const TravelPlanDetail = () => {
 
   return (
     <Container>
-      <PlanName>{travelPlan.planName}</PlanName>
-      <DetailItem>Start Date: {travelPlan.startDate}</DetailItem>
-      <DetailItem>End Date: {travelPlan.endDate}</DetailItem>
-      <DetailItem>Activities: {travelPlan.activity}</DetailItem>
-      <Tag>Tag: {travelPlan.tag}</Tag>
-      <Budget>Budget: {travelPlan.budget} €</Budget>
-      <ButtonContainer>
-        <ReturnButton onClick={handleReturn}>Return</ReturnButton>
-        <EditButton onClick={handleEdit}>Edit</EditButton>
-        <DeleteButton onClick={handleDelete}>Delete</DeleteButton>
-      </ButtonContainer>
-      {travelPlan.picture && (
+      <Title>{travelPlan.planName}</Title>
+      <Form onSubmit={handleSubmit}>
+        <RowContainer>
+          <RowItem>
+            <Input
+              type="text"
+              value={editedPlanName}
+              onChange={(e) => setEditedPlanName(e.target.value)}
+              placeholder="Plan Name"
+              required
+              disabled={!editing}
+            />
+          </RowItem>
+          <RowItem>
+            <Input
+              type="text"
+              value={editedTag}
+              onChange={(e) => setEditedTag(e.target.value)}
+              placeholder="Tag"
+              required
+              disabled={!editing}
+            />
+          </RowItem>
+        </RowContainer>
+        <RowContainer>
+          <RowItem>
+            <Input
+              type="date"
+              value={editedStartDate}
+              onChange={(e) => setEditedStartDate(e.target.value)}
+              required
+              disabled={!editing}
+            />
+          </RowItem>
+          <RowItem>
+            <Input
+              type="date"
+              value={editedEndDate}
+              onChange={(e) => setEditedEndDate(e.target.value)}
+              required
+              disabled={!editing}
+            />
+          </RowItem>
+        </RowContainer>
+        <RowContainer>
+          <RowItem>
+            <Input
+              type="number"
+              value={editedBudget}
+              onChange={(e) => setEditedBudget(e.target.value)}
+              placeholder="Budget (€)"
+              required
+              disabled={!editing}
+            />
+          </RowItem>
+        </RowContainer>
+        {editing && (
+          <UploadButton>
+            Upload Picture
+            <FileInput type="file" accept="image/*" onChange={handlePictureUpload} />
+          </UploadButton>
+        )}
+        <RowContainer>
+          <RowItem>
+            {editedActivities.map((activity, index) => (
+              <CheckboxLabel key={index}>
+                <CheckboxInput
+                  type="checkbox"
+                  checked={checkedActivities.includes(activity)}
+                  onChange={() => handleCheckboxChange(activity)}
+                  disabled={!editing}
+                />
+                <span>{activity}</span>
+              </CheckboxLabel>
+            ))}
+          </RowItem>
+        </RowContainer>
+        {editing && (
+          <AddActivityContainer>
+            <AddActivityInput
+              type="text"
+              placeholder="Add Activity"
+              value={newActivity}
+              onChange={(e) => setNewActivity(e.target.value)}
+            />
+            <AddActivityButton type="button" onClick={handleAddActivity}>
+              Add
+            </AddActivityButton>
+          </AddActivityContainer>
+        )}
+        <ButtonContainer>
+          {!editing && (
+            <>
+              <ReturnButton onClick={() => router.push('/')}>Return</ReturnButton>
+              <SubmitButton onClick={handleEdit}>Edit</SubmitButton>
+              <DeleteButton onClick={handleDelete}>Delete</DeleteButton>
+            </>
+          )}
+          {editing && (
+            <>
+              <SubmitButton type="submit">Save Changes</SubmitButton>
+              <ReturnButton onClick={handleCancel}>Cancel</ReturnButton>
+            </>
+          )}
+        </ButtonContainer>
         <ImageContainer>
-          <Image src={travelPlan.picture} alt="Plan Picture" />
+          {travelPlan.picture && <Image src={travelPlan.picture} alt="Plan Picture" />}
         </ImageContainer>
-      )}
-      <UploadButtonContainer>
-        <UploadButton>
-          Upload Picture
-          <FileInput type="file" accept="image/*" onChange={handlePictureUpload} />
-        </UploadButton>
-      </UploadButtonContainer>
+      </Form>
     </Container>
   );
 };

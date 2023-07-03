@@ -26,7 +26,8 @@ const PlanItem = styled.div`
   margin-bottom: 10px;
   cursor: pointer;
   transition: background-color 0.3s;
-  background-image: ${(props) => (props.image ? `url(${props.image})` : `url("/default_background.avif")`)};
+  background-image: ${(props) =>
+    props.image ? `url(${props.image})` : `url("/default_background.avif")`};
   background-size: cover;
   background-position: center;
 `;
@@ -63,7 +64,11 @@ const Duration = styled.p`
 const Activity = styled.p`
   color: #fff;
   font-size: 14px;
-  margin-top: 10px;
+  display: inline-block;
+  margin-right: 10px;
+  ::before {
+    content: '■ ';
+  }
 `;
 
 const Budget = styled.p`
@@ -75,8 +80,10 @@ const Budget = styled.p`
   }
 `;
 
-const TravelPlanList = ({ travelPlans }) => {
+const TravelPlanList = () => {
   const router = useRouter();
+
+  const [travelPlans, setTravelPlans] = useState(exampleTravelPlans);
 
   useEffect(() => {
     localStorage.setItem('travelPlans', JSON.stringify(travelPlans));
@@ -109,7 +116,11 @@ const TravelPlanList = ({ travelPlans }) => {
                   year: '2-digit',
                 })}`}
               </Duration>
-              <Activity>{plan.activity}</Activity>
+              <div>
+                {plan.activities.map((activity, index) => (
+                  <Activity key={index}>{activity}</Activity>
+                ))}
+              </div>
               <Budget>{plan.budget}</Budget>
             </InfoWrapper>
             <Tag>{plan.tag}</Tag>
