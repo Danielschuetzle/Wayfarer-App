@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
+import WeatherForecast from '..//../components/WeatherForecast';
 
-const Container = styled.div`
+const Card = styled.div`
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
@@ -16,6 +17,32 @@ const Title = styled.h1`
   font-size: 24px;
   margin-bottom: 20px;
   text-align: center;
+`;
+
+const WeatherContainer = styled.div`
+  margin-bottom: 20px;
+`;
+
+const WeatherTitle = styled.h2`
+  color: #3f72af;
+  font-size: 20px;
+  margin-bottom: 10px;
+`;
+
+const WeatherInfoBox = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+`;
+
+const WeatherInfoTitle = styled.p`
+  font-weight: bold;
+  margin-right: 10px;
+`;
+
+const WeatherInfo = styled.p`
+  font-weight: bold;
+  color: grey;
 `;
 
 const Form = styled.form`
@@ -284,8 +311,14 @@ const TravelPlanDetail = () => {
   }
 
   return (
-    <Container>
+    <Card>
       <Title>{travelPlan.planName}</Title>
+        <WeatherForecast location={travelPlan.location} startDate={travelPlan.startDate} />
+        <WeatherInfoBox>
+          <WeatherInfo>{travelPlan.temperature}</WeatherInfo>
+          <WeatherInfo>{travelPlan.weatherDescription}</WeatherInfo>
+        </WeatherInfoBox>
+
       <Form onSubmit={handleSubmit}>
         <RowContainer>
           <RowItem>
@@ -394,7 +427,7 @@ const TravelPlanDetail = () => {
           {travelPlan.picture && <Image src={travelPlan.picture} alt="Plan Picture" />}
         </ImageContainer>
       </Form>
-    </Container>
+    </Card>
   );
 };
 
