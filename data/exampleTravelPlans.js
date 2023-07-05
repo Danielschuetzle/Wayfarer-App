@@ -2,8 +2,8 @@ const exampleTravelPlans = [
   {
     id: 1,
     planName: 'Paris, France',
-    startDate: '2023-07-01',
-    endDate: '2023-07-05',
+    startDate: '2023-07-05',
+    endDate: '2023-07-20',
     activities: ['Sightseeing', 'Shopping', 'Local Cuisine'],
     tag: 'City',
     picture: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1888&q=80',

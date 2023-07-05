@@ -20,29 +20,17 @@ const Title = styled.h1`
 `;
 
 const WeatherContainer = styled.div`
-  margin-bottom: 20px;
-`;
-
-const WeatherTitle = styled.h2`
-  color: #3f72af;
-  font-size: 20px;
-  margin-bottom: 10px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f5f8fb;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
 
 const WeatherInfoBox = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 10px;
-`;
-
-const WeatherInfoTitle = styled.p`
-  font-weight: bold;
-  margin-right: 10px;
-`;
-
-const WeatherInfo = styled.p`
-  font-weight: bold;
-  color: grey;
 `;
 
 const Form = styled.form`
@@ -312,17 +300,12 @@ const TravelPlanDetail = () => {
 
   return (
     <Card>
-      <Title>{travelPlan.planName}</Title>
-        <WeatherForecast location={travelPlan.location} startDate={travelPlan.startDate} />
-        <WeatherInfoBox>
-          <WeatherInfo>{travelPlan.temperature}</WeatherInfo>
-          <WeatherInfo>{travelPlan.weatherDescription}</WeatherInfo>
-        </WeatherInfoBox>
-        <WeatherForecast location={travelPlan.location} endDate={travelPlan.endDate} />
-        <WeatherInfoBox>
-          <WeatherInfo>{travelPlan.temperature}</WeatherInfo>
-          <WeatherInfo>{travelPlan.weatherDescription}</WeatherInfo>
-        </WeatherInfoBox>
+    <Title>{travelPlan.planName}</Title>
+    <WeatherContainer>
+      <WeatherInfoBox>
+        <WeatherForecast location={travelPlan.location} date={travelPlan.startDate} />
+      </WeatherInfoBox>
+    </WeatherContainer>
 
       <Form onSubmit={handleSubmit}>
         <RowContainer>
