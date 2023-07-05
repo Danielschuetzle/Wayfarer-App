@@ -35,10 +35,13 @@ const WeatherForecast = ({ location, startDate, endDate }) => {
     const fetchWeatherForecast = async () => {
       try {
         const response = await fetch(
-          `https://api.weatherbit.io/v2.0/forecast/daily?key=${process.env.NEXT_PUBLIC_WEATHER_API}&city=${location}&start_date=${startDate}&end_date=${endDate}`
+          `https://api.weatherbit.io/v2.0/forecast/daily?key=${process.env.NEXT_PUBLIC_WEATHER_API}&city=${location}`
         );
         const data = await response.json();
-        setWeatherData(data.data);
+        const filteredData = data.data.filter(
+          (day) => day.valid_date >= startDate && day.valid_date <= endDate
+        );
+        setWeatherData(filteredData);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching weather forecast:', error);
@@ -53,7 +56,7 @@ const WeatherForecast = ({ location, startDate, endDate }) => {
   }
 
   if (!weatherData.length) {
-    return <p>Unable to fetch weather forecast.</p>;
+    return <p>No weather data available for the selected dates.</p>;
   }
 
   return (

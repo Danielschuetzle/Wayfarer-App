@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
-import WeatherForecast from '..//../components/WeatherForecast';
+import WeatherForecast from '../../components/WeatherForecast/index';
 
 const Card = styled.div`
   max-width: 800px;
@@ -20,18 +20,23 @@ const Title = styled.h1`
 `;
 
 const WeatherContainer = styled.div`
-  margin: 20px auto;
-  padding: 20px;
-  background-color: #f5f8fb;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
 `;
-
 
 const WeatherInfoBox = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+`;
+
+const WeatherInfoTitle = styled.p`
+  font-weight: bold;
+  margin-right: 10px;
+  text-align: center;
+`;
+
+const WeatherInfo = styled.p`
+  font-weight: light;
 `;
 
 const Form = styled.form`
@@ -323,18 +328,26 @@ const TravelPlanDetail = () => {
     return <p>Loading...</p>;
   }
 
+
   return (
     <Card>
-    <Title>{travelPlan.planName}</Title>
-    <WeatherContainer>
-  <WeatherInfoBox>
-    <WeatherForecast 
-      location={travelPlan.location} 
-      startDate={travelPlan.startDate}
-      endDate={travelPlan.endDate} 
-    />
-  </WeatherInfoBox>
-</WeatherContainer>
+      <Title>{travelPlan.planName}</Title>
+      <WeatherContainer>
+        {editing ? (
+          <WeatherForecast
+            location={travelPlan.location}
+            startDate={editedStartDate}
+            endDate={editedEndDate}
+          />
+        ) : (
+          <WeatherForecast
+            location={travelPlan.location}
+            startDate={travelPlan.startDate}
+            endDate={travelPlan.endDate}
+          />
+        )}
+      </WeatherContainer>
+
 
       <Form onSubmit={handleSubmit}>
         <RowContainer>
