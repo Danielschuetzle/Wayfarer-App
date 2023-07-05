@@ -27,6 +27,7 @@ const WeatherContainer = styled.div`
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
 
+
 const WeatherInfoBox = styled.div`
   display: flex;
   align-items: center;
@@ -195,6 +196,8 @@ const TravelPlanDetail = () => {
   const [editedPicture, setEditedPicture] = useState(null);
   const [newActivity, setNewActivity] = useState('');
   const [checkedActivities, setCheckedActivities] = useState([]);
+  const [weatherData, setWeatherData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const handleCheckboxChange = (activity) => {
     if (checkedActivities.includes(activity)) {
@@ -222,6 +225,28 @@ const TravelPlanDetail = () => {
 
     fetchTravelPlan();
   }, [id]);
+
+  useEffect(() => {
+    const fetchWeatherForecast = async () => {
+      try {
+        const response = await fetch(
+          `https://api.weatherbit.io/v2.0/forecast/daily?key=${process.env.NEXT_PUBLIC_WEATHER_API}&city=${travelPlan?.location}`
+        );
+        const data = await response.json();
+        const filteredData = data.data.filter((day) =>
+          day.valid_date >= travelPlan?.startDate && day.valid_date <= travelPlan?.endDate
+        );
+        setWeatherData(filteredData);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching weather forecast:', error);
+      }
+    };
+
+    if (travelPlan?.location && travelPlan?.startDate && travelPlan?.endDate) {
+      fetchWeatherForecast();
+    }
+  }, [travelPlan]);
 
   const handleEdit = () => {
     setEditing(true);
@@ -302,10 +327,14 @@ const TravelPlanDetail = () => {
     <Card>
     <Title>{travelPlan.planName}</Title>
     <WeatherContainer>
-      <WeatherInfoBox>
-        <WeatherForecast location={travelPlan.location} date={travelPlan.startDate} />
-      </WeatherInfoBox>
-    </WeatherContainer>
+  <WeatherInfoBox>
+    <WeatherForecast 
+      location={travelPlan.location} 
+      startDate={travelPlan.startDate}
+      endDate={travelPlan.endDate} 
+    />
+  </WeatherInfoBox>
+</WeatherContainer>
 
       <Form onSubmit={handleSubmit}>
         <RowContainer>

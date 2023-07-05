@@ -9,7 +9,6 @@ const WeatherTitle = styled.h2`
   color: #3f72af;
   font-size: 18px;
   margin-bottom: 10px;
-  text-align: center;
 `;
 
 const WeatherInfoBox = styled.div`
@@ -22,7 +21,6 @@ const WeatherInfoTitle = styled.p`
   font-weight: bold;
   margin-right: 10px;
   text-align: center;
-
 `;
 
 const WeatherInfo = styled.p`
@@ -30,8 +28,7 @@ const WeatherInfo = styled.p`
 `;
 
 const WeatherForecast = ({ location, startDate, endDate }) => {
-  const [startDayForecast, setStartDayForecast] = useState(null);
-  const [endDayForecast, setEndDayForecast] = useState(null);
+  const [weatherData, setWeatherData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -41,8 +38,7 @@ const WeatherForecast = ({ location, startDate, endDate }) => {
           `https://api.weatherbit.io/v2.0/forecast/daily?key=${process.env.NEXT_PUBLIC_WEATHER_API}&city=${location}&start_date=${startDate}&end_date=${endDate}`
         );
         const data = await response.json();
-        setStartDayForecast(data.data[0]);
-        setEndDayForecast(data.data[data.data.length - 1]);
+        setWeatherData(data.data);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching weather forecast:', error);
@@ -56,37 +52,29 @@ const WeatherForecast = ({ location, startDate, endDate }) => {
     return <p>Loading weather forecast...</p>;
   }
 
-  if (!startDayForecast || !endDayForecast) {
+  if (!weatherData.length) {
     return <p>Unable to fetch weather forecast.</p>;
   }
 
   return (
     <WeatherContainer>
       <WeatherTitle>Weather Forecast</WeatherTitle>
-      <WeatherInfoBox>
-        <WeatherInfoTitle>Start Date:</WeatherInfoTitle>
-        <WeatherInfo>{startDayForecast.valid_date}</WeatherInfo>
-      </WeatherInfoBox>
-      <WeatherInfoBox>
-        <WeatherInfoTitle>Temperature:</WeatherInfoTitle>
-        <WeatherInfo>{startDayForecast.temp}°C</WeatherInfo>
-      </WeatherInfoBox>
-      <WeatherInfoBox>
-        <WeatherInfoTitle>Weather:</WeatherInfoTitle>
-        <WeatherInfo>{startDayForecast.weather.description}</WeatherInfo>
-      </WeatherInfoBox>
-      <WeatherInfoBox>
-        <WeatherInfoTitle>End Date:</WeatherInfoTitle>
-        <WeatherInfo>{endDayForecast.valid_date}</WeatherInfo>
-      </WeatherInfoBox>
-      <WeatherInfoBox>
-        <WeatherInfoTitle>Temperature:</WeatherInfoTitle>
-        <WeatherInfo>{endDayForecast.temp}°C</WeatherInfo>
-      </WeatherInfoBox>
-      <WeatherInfoBox>
-        <WeatherInfoTitle>Weather:</WeatherInfoTitle>
-        <WeatherInfo>{endDayForecast.weather.description}</WeatherInfo>
-      </WeatherInfoBox>
+      {weatherData.map((day, index) => (
+        <div key={index}>
+          <WeatherInfoBox>
+            <WeatherInfoTitle>Start Date:</WeatherInfoTitle>
+            <WeatherInfo>{day.valid_date}</WeatherInfo>
+          </WeatherInfoBox>
+          <WeatherInfoBox>
+            <WeatherInfoTitle>Temperature:</WeatherInfoTitle>
+            <WeatherInfo>{day.temp}°C</WeatherInfo>
+          </WeatherInfoBox>
+          <WeatherInfoBox>
+            <WeatherInfoTitle>Weather:</WeatherInfoTitle>
+            <WeatherInfo>{day.weather.description}</WeatherInfo>
+          </WeatherInfoBox>
+        </div>
+      ))}
     </WeatherContainer>
   );
 };
