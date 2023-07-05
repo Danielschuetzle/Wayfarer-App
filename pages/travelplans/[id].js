@@ -318,6 +318,11 @@ const TravelPlanDetail = () => {
           <WeatherInfo>{travelPlan.temperature}</WeatherInfo>
           <WeatherInfo>{travelPlan.weatherDescription}</WeatherInfo>
         </WeatherInfoBox>
+        <WeatherForecast location={travelPlan.location} endDate={travelPlan.endDate} />
+        <WeatherInfoBox>
+          <WeatherInfo>{travelPlan.temperature}</WeatherInfo>
+          <WeatherInfo>{travelPlan.weatherDescription}</WeatherInfo>
+        </WeatherInfoBox>
 
       <Form onSubmit={handleSubmit}>
         <RowContainer>
