@@ -3,28 +3,52 @@ import styled from 'styled-components';
 
 const WeatherContainer = styled.div`
   margin-top: 20px;
+  background-color: #f5f8fb;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
 
 const WeatherTitle = styled.h2`
   color: #3f72af;
   font-size: 18px;
-  margin-bottom: 10px;
+  margin: 20px 0;
+  text-align: center;
 `;
 
-const WeatherInfoBox = styled.div`
+const WeatherInfoList = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0;
+`;
+
+const WeatherInfoItem = styled.li`
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  justify-content: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  background-color: #f9f9f9;
+
+  &:last-child {
+    border-bottom: none;
+  }
+`;
+
+const WeatherInfoGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
 `;
 
 const WeatherInfoTitle = styled.p`
   font-weight: bold;
-  margin-right: 10px;
-  text-align: center;
+  margin-bottom: 5px;
 `;
 
-const WeatherInfo = styled.p`
-  font-weight: light;
+const WeatherInfoValue = styled.p`
+  font-weight: normal;
 `;
 
 const WeatherForecast = ({ location, startDate, endDate }) => {
@@ -35,12 +59,10 @@ const WeatherForecast = ({ location, startDate, endDate }) => {
     const fetchWeatherForecast = async () => {
       try {
         const response = await fetch(
-          `https://api.weatherbit.io/v2.0/forecast/daily?key=${process.env.NEXT_PUBLIC_WEATHER_API}&city=${location}`
+          `https://api.weatherbit.io/v2.0/forecast/daily?key=${process.env.NEXT_PUBLIC_WEATHER_API}&city=${location}&start_date=${startDate}&end_date=${endDate}`
         );
         const data = await response.json();
-        const filteredData = data.data.filter(
-          (day) => day.valid_date >= startDate && day.valid_date <= endDate
-        );
+        const filteredData = data.data.filter((day) => day.valid_date >= startDate && day.valid_date <= endDate);
         setWeatherData(filteredData);
         setLoading(false);
       } catch (error) {
@@ -56,28 +78,30 @@ const WeatherForecast = ({ location, startDate, endDate }) => {
   }
 
   if (!weatherData.length) {
-    return <p>No weather data available for the selected dates.</p>;
+    return <p>Unable to fetch weather forecast.</p>;
   }
 
   return (
     <WeatherContainer>
       <WeatherTitle>Weather Forecast</WeatherTitle>
-      {weatherData.map((day, index) => (
-        <div key={index}>
-          <WeatherInfoBox>
-            <WeatherInfoTitle>Start Date:</WeatherInfoTitle>
-            <WeatherInfo>{day.valid_date}</WeatherInfo>
-          </WeatherInfoBox>
-          <WeatherInfoBox>
-            <WeatherInfoTitle>Temperature:</WeatherInfoTitle>
-            <WeatherInfo>{day.temp}°C</WeatherInfo>
-          </WeatherInfoBox>
-          <WeatherInfoBox>
-            <WeatherInfoTitle>Weather:</WeatherInfoTitle>
-            <WeatherInfo>{day.weather.description}</WeatherInfo>
-          </WeatherInfoBox>
-        </div>
-      ))}
+      <WeatherInfoList>
+        {weatherData.map((day, index) => (
+          <WeatherInfoItem key={index}>
+            <WeatherInfoGroup>
+              <WeatherInfoTitle>Date:</WeatherInfoTitle>
+              <WeatherInfoValue>{day.valid_date}</WeatherInfoValue>
+            </WeatherInfoGroup>
+            <WeatherInfoGroup>
+              <WeatherInfoTitle>Temperature:</WeatherInfoTitle>
+              <WeatherInfoValue>{day.temp}°C</WeatherInfoValue>
+            </WeatherInfoGroup>
+            <WeatherInfoGroup>
+              <WeatherInfoTitle>Weather:</WeatherInfoTitle>
+              <WeatherInfoValue>{day.weather.description}</WeatherInfoValue>
+            </WeatherInfoGroup>
+          </WeatherInfoItem>
+        ))}
+      </WeatherInfoList>
     </WeatherContainer>
   );
 };

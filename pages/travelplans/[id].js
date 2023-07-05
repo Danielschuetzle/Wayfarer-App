@@ -23,27 +23,13 @@ const WeatherContainer = styled.div`
   margin-top: 20px;
 `;
 
-const WeatherInfoBox = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-`;
-
-const WeatherInfoTitle = styled.p`
-  font-weight: bold;
-  margin-right: 10px;
-  text-align: center;
-`;
-
-const WeatherInfo = styled.p`
-  font-weight: light;
-`;
-
 const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 20px;
   align-items: center;
+  margin-top: 10px;
+
 `;
 
 const Input = styled.input`
