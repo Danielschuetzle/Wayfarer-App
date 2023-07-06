@@ -220,9 +220,8 @@ const TravelPlanDetail = () => {
   useEffect(() => {
     const fetchWeatherForecast = async () => {
       try {
-        const response = await fetch(
-          `https://api.weatherbit.io/v2.0/forecast/daily?key=${process.env.NEXT_PUBLIC_WEATHER_API}&city=${travelPlan?.location}`
-        );
+        const response = await fetch(`/api/weather?city=${travelPlan?.location}`);
+
         const data = await response.json();
         const filteredData = data.data.filter((day) =>
           day.valid_date >= editedStartDate && day.valid_date <= editedEndDate

@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
+import useSWR from 'swr';
 
 const WeatherContainer = styled.div`
   margin-top: 20px;
@@ -51,41 +52,25 @@ const WeatherInfoValue = styled.p`
   font-weight: normal;
 `;
 
+const fetcher = (url) => fetch(url).then((res) => res.json());
+
 const WeatherForecast = ({ location, startDate, endDate }) => {
-  const [weatherData, setWeatherData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { data, error } = useSWR(
+    `/api/weather?city=${location}&startDate=${startDate}&endDate=${endDate}`,
+    fetcher
+  );
 
-  useEffect(() => {
-    const fetchWeatherForecast = async () => {
-      try {
-        const response = await fetch(
-          `https://api.weatherbit.io/v2.0/forecast/daily?key=${process.env.NEXT_PUBLIC_WEATHER_API}&city=${location}&start_date=${startDate}&end_date=${endDate}`
-        );
-        const data = await response.json();
-        const filteredData = data.data.filter((day) => day.valid_date >= startDate && day.valid_date <= endDate);
-        setWeatherData(filteredData);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching weather forecast:', error);
-      }
-    };
+  if (error) return <div>Failed to load</div>;
+  if (!data) return <div>Loading...</div>;
 
-    fetchWeatherForecast();
-  }, [location, startDate, endDate]);
-
-  if (loading) {
-    return <p>Loading weather forecast...</p>;
-  }
-
-  if (!weatherData.length) {
-    return <p>Unable to fetch weather forecast.</p>;
-  }
+  // Filter out only the weather data for start and end dates
+  const filteredData = data.filter(day => day.valid_date === startDate || day.valid_date === endDate);
 
   return (
     <WeatherContainer>
       <WeatherTitle>Weather Forecast</WeatherTitle>
       <WeatherInfoList>
-        {weatherData.map((day, index) => (
+        {filteredData.map((day, index) => (
           <WeatherInfoItem key={index}>
             <WeatherInfoGroup>
               <WeatherInfoTitle>Date:</WeatherInfoTitle>
