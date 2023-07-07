@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
+import WeatherForecast from '../../components/WeatherForecast/index';
 
-const Container = styled.div`
+const Card = styled.div`
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
@@ -18,11 +19,17 @@ const Title = styled.h1`
   text-align: center;
 `;
 
+const WeatherContainer = styled.div`
+  margin-top: 20px;
+`;
+
 const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 20px;
   align-items: center;
+  margin-top: 10px;
+
 `;
 
 const Input = styled.input`
@@ -180,6 +187,8 @@ const TravelPlanDetail = () => {
   const [editedPicture, setEditedPicture] = useState(null);
   const [newActivity, setNewActivity] = useState('');
   const [checkedActivities, setCheckedActivities] = useState([]);
+  const [weatherData, setWeatherData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const handleCheckboxChange = (activity) => {
     if (checkedActivities.includes(activity)) {
@@ -207,7 +216,7 @@ const TravelPlanDetail = () => {
 
     fetchTravelPlan();
   }, [id]);
-
+  
   const handleEdit = () => {
     setEditing(true);
   };
@@ -283,9 +292,27 @@ const TravelPlanDetail = () => {
     return <p>Loading...</p>;
   }
 
+
   return (
-    <Container>
+    <Card>
       <Title>{travelPlan.planName}</Title>
+      <WeatherContainer>
+        {editing ? (
+          <WeatherForecast
+            location={travelPlan.location}
+            startDate={editedStartDate}
+            endDate={editedEndDate}
+          />
+        ) : (
+          <WeatherForecast
+            location={travelPlan.location}
+            startDate={travelPlan.startDate}
+            endDate={travelPlan.endDate}
+          />
+        )}
+      </WeatherContainer>
+
+
       <Form onSubmit={handleSubmit}>
         <RowContainer>
           <RowItem>
@@ -394,7 +421,7 @@ const TravelPlanDetail = () => {
           {travelPlan.picture && <Image src={travelPlan.picture} alt="Plan Picture" />}
         </ImageContainer>
       </Form>
-    </Container>
+    </Card>
   );
 };
 
