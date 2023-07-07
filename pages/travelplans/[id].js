@@ -217,27 +217,6 @@ const TravelPlanDetail = () => {
     fetchTravelPlan();
   }, [id]);
   
-  useEffect(() => {
-    const fetchWeatherForecast = async () => {
-      try {
-        const response = await fetch(`/api/weather?city=${travelPlan?.location}`);
-
-        const data = await response.json();
-        const filteredData = data.data.filter((day) =>
-          day.valid_date >= editedStartDate && day.valid_date <= editedEndDate
-        );
-        setWeatherData(filteredData);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching weather forecast:', error);
-      }
-    };
-  
-    if (travelPlan?.location && editedStartDate && editedEndDate) {
-      fetchWeatherForecast();
-    }
-  }, [travelPlan, editedStartDate, editedEndDate]);
-
   const handleEdit = () => {
     setEditing(true);
   };
