@@ -1,55 +1,44 @@
-# 🌍 Reiseplaner Wayfarer App
+# 🌍 Wayfarer Planner
 
-## 📋 Projektbeschreibung
+Wayfarer Planner is a comprehensive travel planning application that helps users organize and manage their travel plans with ease. The application is built using Next.js, React.js, and Styled-components, ensuring a modern, fast, and interactive user experience.
 
-Die Reiseplaner App ist eine mobile Anwendung, die Reisenden hilft, ihre bevorstehenden Reisen zu organisieren. Benutzer können Reisepläne erstellen, Aktivitäten hinzufügen, die Pläne speichern und sie jederzeit anzeigen.
+## 🎯 Features
 
-## 🛠️ Upcoming
+- Add and manage travel plans
+- View travel plans on a calendar
+- Fetch and view weather forecast for travel dates
+- Edit travel plans, including updating activities, budget, dates, and more
+- Upload images for each plan
+- Tag plans for easy categorization
+- Delete existing plans
+- Aesthetic UI with responsive design
 
+## 🔧 Installation and Setup
 
-1. **Reiseplan-Erstellung**
-   - Implementieren einer MongoDB-Datenbankstruktur für Reisepläne.
-   - Erstellen einer API-Route, um neue Reisepläne in MongoDB zu speichern.
-   - Implementieren einer React-Komponente mit einem Formular, um neue Reisepläne einzugeben und an die Serverroute zu senden.
+1. Clone the repository:
+`git clone https://github.com/danielschuetzle/Wayfarer-App.git`
 
-2. **Aktivitäten hinzufügen**
-   - Implementieren einer MongoDB-Datenbankstruktur für Aktivitäten.
-   - Erstellen einer API-Route, um neue Aktivitäten in MongoDB zu speichern.
-   - Implementieren einer React-Komponente mit einem Formular, um neue Aktivitäten einzugeben und an die Serverroute zu senden.
+2. Install the dependencies:
+`npm install`
 
-3. **Reiseplan-Ansicht**
-   - Implementieren einer API-Route, um einen Reiseplan und seine Aktivitäten aus MongoDB abzurufen.
-   - Implementieren einer React-Komponente, die den Reiseplan und die Aktivitäten anzeigt und die notwendigen Daten von der Serverroute abruft.
-
-4. **Reiseplan-Teilen**
-   - Implementieren einer API-Route, die einen eindeutigen öffentlichen Link zu einem Reiseplan generiert.
-   - Implementieren einer React-Komponente, die den Link anzeigt und den Benutzer das Teilen ermöglicht.
-
-5. **Wetterinformationen**
-   - Registrieren für die OpenWeatherMap API und Anbinden dieser API.
-   - Implementieren einer API-Route, die Wetterinformationen für einen bestimmten Ort und Zeitraum von der OpenWeatherMap API abruft.
-   - Implementieren einer React-Komponente, die Wetterinformationen anzeigt.
-
-6. **Aktivitätensuche**
-   - Registrieren für die Google Places API und Anbinden dieser API.
-   - Implementieren einer API-Route, die Aktivitätensuchen über die Google Places API durchführt.
-   - Implementieren einer React-Komponente mit Suchfeld und Ergebnisanzeige, die die von der API bereitgestellten Informationen verwendet.
-
-7. **Kartenansicht**
-   - Registrieren für die Google Maps API und Anbinden dieser API.
-   - Implementieren einer React-Komponente, die eine Kartenansicht der Aktivitäten in den Reiseplänen der Benutzer anzeigt.
-``
+3. Run the application:
+`npm run dev`
 
 
-### Optional
+The application will be available at `http://localhost:3000`.
 
-**Benutzerregistrierung und Anmeldung**
-   - Einrichten einer Benutzerdatenbank mit MongoDB.
-   - Implementieren einer Registrierungsroute im Next.js API-Routing, die die Benutzerinformationen validiert und den neuen Benutzer in der MongoDB speichert.
-   - Implementieren einer Login-Route, die die Benutzeranmeldedaten überprüft und einen JWT ausstellt.
-   - Implementieren von React-Komponenten für die Registrierungs- und Login-Formulare und verwenden des `fetch`-APIs oder `axios`, um Anfragen an die Serverrouten zu senden.
+## 📖 Usage
 
-**Reiseplan-Export**
-   - Verwenden einer serverseitigen Bibliothek wie Puppeteer, um HTML zu PDF zu konvertieren.
-   - Implementieren einer API-Route, die einen Reiseplan als PDF generiert und zum Download anbietet.
-   - Implementieren einer React-Komponente, die den Download des PDFs ermöglicht.
+Visit the application and start creating your travel plans. You can add various details such as plan name, tag, start and end dates, budget, activities, and even upload a picture. 
+
+Once your plan is created, you can view it on the calendar, edit it, or delete it. During editing, you can also fetch the weather forecast for your travel dates, helping you plan better.
+
+## 🔒 Environment Variables
+
+The following environment variables are required:
+
+- `NEXT_PUBLIC_WEATHER_API`: Your weather API key to fetch weather forecasts.
+
+## 🙏 Acknowledgements
+
+- Weather data fetched from [Weatherbit API](https://www.weatherbit.io/)
