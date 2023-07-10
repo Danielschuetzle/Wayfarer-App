@@ -16,16 +16,13 @@ Wayfarer Planner is a comprehensive travel planning application that helps users
 ## 🔧 Installation and Setup
 
 1. Clone the repository:
-   
-`git clone https://github.com/danielschuetzle/Wayfarer-App.git`
+   `git clone https://github.com/danielschuetzle/Wayfarer-App.git`
 
 3. Install the dependencies:
-   
-`npm install`
+   `npm install`
 
 5. Run the application:
-   
-`npm run dev`
+   `npm run dev`
 
 
 The application will be available at `http://localhost:3000`.
