@@ -105,7 +105,7 @@ const TravelPlanForm = ({ onFormSubmit }) => {
       activities,
       budget,
       tag,
-      picture,
+      picture: picture ? URL.createObjectURL(picture) : null,
     };
 
     onFormSubmit(travelPlanData);
@@ -185,7 +185,7 @@ const TravelPlanForm = ({ onFormSubmit }) => {
         </ActivityButton>
       </FlexContainer>
       {activities.slice(1).map((activity, index) => (
-        <FlexContainer key={`${activity}-${index}`}>
+        <FlexContainer key={index + 1}>
           <FieldContainer>
             <Label>Activity {index + 2}:</Label>
             <Input

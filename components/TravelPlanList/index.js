@@ -80,10 +80,8 @@ const Budget = styled.p`
   }
 `;
 
-const TravelPlanList = () => {
+const TravelPlanList = ({ travelPlans }) => {  // receive travelPlans from props
   const router = useRouter();
-
-  const [travelPlans, setTravelPlans] = useState(exampleTravelPlans);
 
   useEffect(() => {
     localStorage.setItem('travelPlans', JSON.stringify(travelPlans));
@@ -92,7 +90,6 @@ const TravelPlanList = () => {
   const handlePlanClick = (id) => {
     router.push(`/travelplans/${id}`);
   };
-
   return (
     <Wrapper>
       <Title>Travel Plans</Title>
